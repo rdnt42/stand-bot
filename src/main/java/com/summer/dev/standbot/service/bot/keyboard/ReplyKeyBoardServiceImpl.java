@@ -1,4 +1,4 @@
-package com.summer.dev.standbot.service.bot;
+package com.summer.dev.standbot.service.bot.keyboard;
 
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -14,12 +14,12 @@ import java.util.List;
  * Date: 27.05.2022
  * Time: 16:38
  */
-@Service
-public class ReplyKeyBoardService {
+@Service("replyKeyboardService")
+public class ReplyKeyBoardServiceImpl {
     public ReplyKeyboardMarkup getMainMenuKeyBoard() {
         KeyboardRow row1 = new KeyboardRow();
         row1.add(new KeyboardButton("Статус"));
-        row1.add(new KeyboardButton("Тест"));
+        row1.add(new KeyboardButton("Изменить статус"));
 
         KeyboardRow row2 = new KeyboardRow();
         row2.add(new KeyboardButton("Второй ряд"));
@@ -36,4 +36,6 @@ public class ReplyKeyBoardService {
 
         return replyKeyboardMarkup;
     }
+
+
 }

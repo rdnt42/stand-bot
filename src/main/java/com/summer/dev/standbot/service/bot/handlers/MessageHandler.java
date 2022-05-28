@@ -1,16 +1,14 @@
 package com.summer.dev.standbot.service.bot.handlers;
 
-import com.summer.dev.standbot.entity.Stand;
 import com.summer.dev.standbot.service.StandService;
-import com.summer.dev.standbot.service.bot.ReplyKeyBoardService;
+import com.summer.dev.standbot.service.bot.keyboard.KeyBoardService;
+import com.summer.dev.standbot.service.bot.keyboard.ReplyKeyBoardServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
-
-import java.util.List;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,7 +23,7 @@ public class MessageHandler {
 
     private final StandService standService;
 
-    private final ReplyKeyBoardService replyKeyBoardService;
+    private final KeyBoardService<? extends ReplyKeyboard> keyBoardService;
 
     public SendMessage answerMessage(Message message) {
         log.info("From id: {} get message: {}", message.getChatId(), message.getText());
@@ -36,26 +34,13 @@ public class MessageHandler {
     }
 
     private SendMessage sendStartMessage(String chatId) {
-        List<Stand> stands = standService.getAll();
-        String message = getStandsInfo(stands);
-        SendMessage sendMessage = new SendMessage(chatId, message);
+        String message = standService.getStandsInfo();
         log.info("Send message for chat id: {}, message: {}", chatId, message);
 
-        sendMessage.setReplyMarkup(replyKeyBoardService.getMainMenuKeyBoard());
-
-        return sendMessage;
-    }
-
-    private String getStandsInfo(List<Stand> stands) {
-        StringBuilder sb = new StringBuilder();
-        for (Stand stand : stands) {
-            sb.append("Стенд: ");
-            sb.append(stand.getName());
-            sb.append(", статус: ");
-            sb.append(stand.getStatus().getName());
-            sb.append("\n");
-        }
-
-        return sb.toString();
+        return SendMessage.builder()
+                .chatId(chatId)
+                .text(message)
+                .replyMarkup(keyBoardService.getMainMenuKeyBoard())
+                .build();
     }
 }

@@ -17,4 +17,8 @@ public interface StandService {
     void setStatus(Long id, StandStatus status);
 
     List<Stand> getAll();
+
+    String getStandsInfo();
+
+    List<String> getStandsNames();
 }

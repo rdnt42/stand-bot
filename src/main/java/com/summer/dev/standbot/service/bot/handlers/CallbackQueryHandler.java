@@ -1,14 +1,14 @@
 package com.summer.dev.standbot.service.bot.handlers;
 
-import com.summer.dev.standbot.constant.CallbackDataPartsEnum;
-import com.summer.dev.standbot.service.bot.ReplyKeyBoardService;
+import com.summer.dev.standbot.constant.keyboard.Commandable;
+import com.summer.dev.standbot.constant.keyboard.MainMenuKeyboardCommandEnum;
+import com.summer.dev.standbot.constant.keyboard.StandNameCommandEnum;
+import com.summer.dev.standbot.service.bot.command.CommandService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
-
-import java.io.IOException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,26 +17,33 @@ import java.io.IOException;
  * Time: 16:23
  */
 @AllArgsConstructor
+@Slf4j
 @Service
 public class CallbackQueryHandler {
 
-    private final ReplyKeyBoardService replyKeyBoardService;
+    private final CommandService<MainMenuKeyboardCommandEnum> mainMenuCommandService;
+    private final CommandService<StandNameCommandEnum> standNameCommandService;
 
-    public BotApiMethod<?> processCallbackQuery(CallbackQuery buttonQuery){
+    public SendMessage processCallbackQuery(CallbackQuery buttonQuery) {
         final String chatId = buttonQuery.getMessage().getChatId().toString();
 
         String data = buttonQuery.getData();
 
-        if (data.equals(CallbackDataPartsEnum.STATUS.name())) {
-            return getCallbackMessage(chatId);
-        }
+        SendMessage sendMessage = getMessageByCommand(data);
+        sendMessage.setChatId(chatId);
 
-        return null;
+        return sendMessage;
     }
 
-    private SendMessage getCallbackMessage(String chatId) {
-        SendMessage sendMessage = new SendMessage(chatId, "Тестовый ответ");
-        sendMessage.setReplyMarkup(replyKeyBoardService.getMainMenuKeyBoard());
-        return sendMessage;
+
+    private SendMessage getMessageByCommand(String data) {
+        Commandable command;
+        if ((command = MainMenuKeyboardCommandEnum.getByName(data)) != null) {
+            return mainMenuCommandService.getMessageFromCommand((MainMenuKeyboardCommandEnum) command);
+        } else if ((command = StandNameCommandEnum.getByName(data)) != null) {
+            return standNameCommandService.getMessageFromCommand((StandNameCommandEnum) command);
+        }
+
+        return mainMenuCommandService.getMessageFromCommand(MainMenuKeyboardCommandEnum.MAIN_MENU);
     }
 }

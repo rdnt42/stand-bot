@@ -2,7 +2,10 @@ package com.summer.dev.standbot.repository;
 
 import com.summer.dev.standbot.entity.Stand;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,4 +15,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface StandRepository extends JpaRepository<Stand, Long> {
+
+    @Query(nativeQuery = true,
+    value = "select name from stands")
+    List<String> getStandsNames();
 }

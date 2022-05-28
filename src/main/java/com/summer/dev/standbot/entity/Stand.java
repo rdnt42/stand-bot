@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Setter
 @Getter
 @Entity
-@Table(name = "STAND")
+@Table(name = "STANDS")
 public class Stand {
 
     @Id
