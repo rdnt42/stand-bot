@@ -1,10 +1,10 @@
 package com.summer.dev.standbot.service.bot.command;
 
-import com.summer.dev.standbot.constant.ParseModeTelegramEnum;
-import com.summer.dev.standbot.constant.keyboard.MainMenuKeyboardCommand;
+import com.summer.dev.standbot.constant.keyboard.StandSelectTemplateCommand;
 import com.summer.dev.standbot.service.StandService;
 import com.summer.dev.standbot.service.bot.keyboard.KeyBoardService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -13,20 +13,26 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
  * Created with IntelliJ IDEA.
  * User: marowak
  * Date: 28.05.2022
- * Time: 14:14
+ * Time: 14:57
  */
+@Slf4j
 @AllArgsConstructor
-@Service("mainMenuCommandService")
-public class MainMenuCommandServiceImpl implements CommandService<MainMenuKeyboardCommand> {
+@Service("standNameCommandService")
+public class StandSelectCommandServiceImpl implements CommandService<StandSelectTemplateCommand> {
     private final KeyBoardService<InlineKeyboardMarkup> keyBoardService;
     private final StandService standService;
 
     @Override
-    public SendMessage getMessageFromCommand(MainMenuKeyboardCommand command) {
-        return switch (command) {
-            case MAIN_MENU -> getMainMenuMessage();
-            case STAND_SELECT -> getShowStandsStatusesMessage();
-        };
+    public SendMessage getMessageFromCommand(StandSelectTemplateCommand command) {
+        log.debug("Get command: " + command.getStandName());
+
+        try {
+            return getStandInfoMessage(command.getStandName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return getMainMenuMessage();
     }
 
     private SendMessage getMainMenuMessage() {
@@ -37,11 +43,11 @@ public class MainMenuCommandServiceImpl implements CommandService<MainMenuKeyboa
         return sendMessage;
     }
 
-    private SendMessage getShowStandsStatusesMessage() {
+    private SendMessage getStandInfoMessage(String standName) {
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setParseMode(ParseModeTelegramEnum.PARSE_MODE_MARKDOWN.getName());
-        sendMessage.setText("*Выберите стенд*");
-        sendMessage.setReplyMarkup(keyBoardService.getStandSelectMenuKeyBoard());
+        sendMessage.setText(standService.getStandInfo(standName));
+        sendMessage.setReplyMarkup(keyBoardService.getStandInfoMenuKeyBoard());
+        sendMessage.setParseMode("Markdown");
 
         return sendMessage;
     }

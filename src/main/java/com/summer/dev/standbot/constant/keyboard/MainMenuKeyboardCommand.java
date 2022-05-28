@@ -11,15 +11,14 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum MainMenuKeyboardCommandEnum implements Commandable {
-    SHOW_STATUS("Статус"),
-    CHANGE_STATUS("Изменить статус"),
+public enum MainMenuKeyboardCommand implements Commandable {
+    STAND_SELECT("Выбор стенда"),
     MAIN_MENU("Основное меню");
 
     private final String showName;
 
-    public static MainMenuKeyboardCommandEnum getByName(String name) {
-        for (MainMenuKeyboardCommandEnum command : MainMenuKeyboardCommandEnum.values()) {
+    public static MainMenuKeyboardCommand getByName(String name) {
+        for (MainMenuKeyboardCommand command : MainMenuKeyboardCommand.values()) {
             if(command.name().equals(name)) {
                 return command;
             }

@@ -1,8 +1,6 @@
 package com.summer.dev.standbot.service.bot.handlers;
 
-import com.summer.dev.standbot.constant.keyboard.Commandable;
-import com.summer.dev.standbot.constant.keyboard.MainMenuKeyboardCommandEnum;
-import com.summer.dev.standbot.constant.keyboard.StandNameCommandEnum;
+import com.summer.dev.standbot.constant.keyboard.*;
 import com.summer.dev.standbot.service.bot.command.CommandService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,8 +19,9 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 @Service
 public class CallbackQueryHandler {
 
-    private final CommandService<MainMenuKeyboardCommandEnum> mainMenuCommandService;
-    private final CommandService<StandNameCommandEnum> standNameCommandService;
+    private final CommandService<MainMenuKeyboardCommand> mainMenuCommandService;
+    private final CommandService<StandSelectTemplateCommand> standSelectCommandService;
+    private final CommandService<StandInfoCommand> standInfoCommandCommandService;
 
     public SendMessage processCallbackQuery(CallbackQuery buttonQuery) {
         final String chatId = buttonQuery.getMessage().getChatId().toString();
@@ -38,12 +37,17 @@ public class CallbackQueryHandler {
 
     private SendMessage getMessageByCommand(String data) {
         Commandable command;
-        if ((command = MainMenuKeyboardCommandEnum.getByName(data)) != null) {
-            return mainMenuCommandService.getMessageFromCommand((MainMenuKeyboardCommandEnum) command);
-        } else if ((command = StandNameCommandEnum.getByName(data)) != null) {
-            return standNameCommandService.getMessageFromCommand((StandNameCommandEnum) command);
+        if ((command = MainMenuKeyboardCommand.getByName(data)) != null) {
+            return mainMenuCommandService.getMessageFromCommand((MainMenuKeyboardCommand) command);
+        } else if (StandSelectTemplateCommand.isContainsStandName(data)) {
+            StandSelectTemplateCommand template = new StandSelectTemplateCommand(data);
+
+            return standSelectCommandService.getMessageFromCommand(template);
+        } else if ((command = StandInfoCommand.getByName(data)) != null) {
+            return standInfoCommandCommandService.getMessageFromCommand((StandInfoCommand) command);
         }
 
-        return mainMenuCommandService.getMessageFromCommand(MainMenuKeyboardCommandEnum.MAIN_MENU);
+            log.warn("Unknown command: {}. Return to main menu", data);
+        return mainMenuCommandService.getMessageFromCommand(MainMenuKeyboardCommand.MAIN_MENU);
     }
 }

@@ -16,8 +16,8 @@ import javax.persistence.Table;
 @Setter
 @Getter
 @Entity
-@Table(name = "STAND_STATUSES")
-public class StandStatus {
+@Table(name = "EQUIPMENT_STATES")
+public class EquipmentState {
     @Id
     private Long id;
 

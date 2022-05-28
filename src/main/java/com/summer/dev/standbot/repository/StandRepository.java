@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,4 +20,6 @@ public interface StandRepository extends JpaRepository<Stand, Long> {
     @Query(nativeQuery = true,
     value = "select name from stands")
     List<String> getStandsNames();
+
+    Optional<Stand> findByName(String name);
 }

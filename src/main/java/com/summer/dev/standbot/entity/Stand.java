@@ -18,13 +18,33 @@ import javax.persistence.*;
 public class Stand {
 
     @Id
+    @Column(name = "stand_id")
     private Long id;
 
+    @Column(unique=true)
     private String name;
 
-    @Column(name = "status_id", updatable = false, insertable = false)
-    private String statusId;
+    @Column(name = "stand_status_id", updatable = false, insertable = false)
+    private String standStatusId;
 
     @ManyToOne
-    private StandStatus status;
+    private EquipmentState standStatus;
+
+    @Column(name = "metrics_status_id", updatable = false, insertable = false)
+    private String metricsStatusId;
+
+    @ManyToOne
+    private EquipmentState metricsStatus;
+
+    @Column(name = "dependent_session_status_id", updatable = false, insertable = false)
+    private String dependentSessionStatusId;
+
+    @ManyToOne
+    private EquipmentState dependentSessionStatus;
+
+    @Column(name = "independent_session_status_id", updatable = false, insertable = false)
+    private String independentSessionStatusId;
+
+    @ManyToOne
+    private EquipmentState independentSessionStatus;
 }
