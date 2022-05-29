@@ -1,7 +1,7 @@
 package com.summer.dev.standbot.service.bot.command;
 
 import com.summer.dev.standbot.constant.ParseModeTelegramEnum;
-import com.summer.dev.standbot.constant.keyboard.MainMenuKeyboardCommand;
+import com.summer.dev.standbot.constant.keyboard.MainMenuCommand;
 import com.summer.dev.standbot.service.StandService;
 import com.summer.dev.standbot.service.bot.keyboard.KeyBoardService;
 import lombok.AllArgsConstructor;
@@ -17,31 +17,23 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
  */
 @AllArgsConstructor
 @Service("mainMenuCommandService")
-public class MainMenuCommandServiceImpl implements CommandService<MainMenuKeyboardCommand> {
+public class MainMenuCommandServiceImpl implements CommandService {
     private final KeyBoardService<InlineKeyboardMarkup> keyBoardService;
     private final StandService standService;
 
     @Override
-    public SendMessage getMessageFromCommand(MainMenuKeyboardCommand command) {
-        return switch (command) {
-            case MAIN_MENU -> getMainMenuMessage();
-            case STAND_SELECT -> getShowStandsStatesMessage();
-        };
+    public SendMessage getMessageFromCommand(String command) {
+        if (MainMenuCommand.MAIN_MENU.equals(command)) {
+            return getMainMenuMessage();
+        }
+
+        throw new IllegalStateException("Unexpected value: " + command);
     }
 
     private SendMessage getMainMenuMessage() {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setText(standService.getStandsInfo());
         sendMessage.setReplyMarkup(keyBoardService.getMainMenuKeyBoard());
-
-        return sendMessage;
-    }
-
-    private SendMessage getShowStandsStatesMessage() {
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setParseMode(ParseModeTelegramEnum.PARSE_MODE_MARKDOWN.getName());
-        sendMessage.setText("*Выберите стенд*");
-        sendMessage.setReplyMarkup(keyBoardService.getStandSelectMenuKeyBoard());
 
         return sendMessage;
     }

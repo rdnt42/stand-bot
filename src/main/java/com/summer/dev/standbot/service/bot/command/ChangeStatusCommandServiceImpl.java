@@ -1,7 +1,6 @@
 package com.summer.dev.standbot.service.bot.command;
 
 import com.summer.dev.standbot.constant.ParseModeTelegramEnum;
-import com.summer.dev.standbot.constant.keyboard.StandInfoCommand;
 import com.summer.dev.standbot.service.StandService;
 import com.summer.dev.standbot.service.bot.command.parser.CommandParserService;
 import com.summer.dev.standbot.service.bot.keyboard.KeyBoardService;
@@ -13,29 +12,37 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 /**
  * Created with IntelliJ IDEA.
  * User: marowak
- * Date: 29.05.2022
- * Time: 17:51
+ * Date: 28.05.2022
+ * Time: 23:43
  */
 @AllArgsConstructor
-@Service("standInfoCommandService")
-public class StandInfoCommandServiceImpl implements CommandService {
-    private final CommandParserService commandParserService;
+@Service("changeStatusCommandService")
+public class ChangeStatusCommandServiceImpl implements CommandService {
     private final KeyBoardService<InlineKeyboardMarkup> keyBoardService;
+    private final CommandParserService commandParserService;
     private final StandService standService;
 
     @Override
     public SendMessage getMessageFromCommand(String command) {
-        String standName = commandParserService.parseStandName(StandInfoCommand.STAND_INFO_PREFIX, command);
+        updateStandStatus(command);
 
-        return getStandInfoMessage(standName);
+        return getChangeStatusMenuMessage();
     }
 
-    private SendMessage getStandInfoMessage(String standName) {
+    private void updateStandStatus(String command) {
+        String standName = commandParserService.parseStandNameByPattern(command);
+        String equipmentName = commandParserService.parseEquipmentNameByPattern(command);
+        String action = commandParserService.parseActionNameByPattern(command);
+        standService.changeStatus(standName, equipmentName, action);
+    }
+
+    private SendMessage getChangeStatusMenuMessage() {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setParseMode(ParseModeTelegramEnum.PARSE_MODE_MARKDOWN.getName());
-        sendMessage.setText(standService.getStandInfo(standName));
-        sendMessage.setReplyMarkup(keyBoardService.getStandInfoMenuKeyBoard(standName));
+        sendMessage.setText("*Статус успешно обновлен*");
+        sendMessage.setReplyMarkup(keyBoardService.getChangeStatusKeyBoard());
 
         return sendMessage;
     }
+
 }

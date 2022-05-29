@@ -24,27 +24,31 @@ public class Stand {
     @Column(unique=true)
     private String name;
 
-    @Column(name = "stand_status_id", updatable = false, insertable = false)
-    private String standStatusId;
+    @Column(name = "stand_status_id")
+    private int standStatusId;
 
     @ManyToOne
-    private EquipmentState standStatus;
+    @JoinColumn(name = "stand_status_id", updatable = false, insertable = false)
+    private Status standStatus;
 
-    @Column(name = "metrics_status_id", updatable = false, insertable = false)
-    private String metricsStatusId;
-
-    @ManyToOne
-    private EquipmentState metricsStatus;
-
-    @Column(name = "dependent_session_status_id", updatable = false, insertable = false)
-    private String dependentSessionStatusId;
+    @Column(name = "metrics_status_id")
+    private int metricsStatusId;
 
     @ManyToOne
-    private EquipmentState dependentSessionStatus;
+    @JoinColumn(name = "metrics_status_id", updatable = false, insertable = false)
+    private Status metricsStatus;
 
-    @Column(name = "independent_session_status_id", updatable = false, insertable = false)
-    private String independentSessionStatusId;
+    @Column(name = "dependent_session_status_id")
+    private int dependentSessionStatusId;
 
     @ManyToOne
-    private EquipmentState independentSessionStatus;
+    @JoinColumn(name = "dependent_session_status_id", updatable = false, insertable = false)
+    private Status dependentSessionStatus;
+
+    @Column(name = "independent_session_status_id")
+    private int independentSessionStatusId;
+
+    @ManyToOne
+    @JoinColumn(name = "independent_session_status_id", updatable = false, insertable = false)
+    private Status independentSessionStatus;
 }

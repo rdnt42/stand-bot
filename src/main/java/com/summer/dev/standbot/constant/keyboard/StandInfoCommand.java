@@ -1,28 +1,12 @@
 package com.summer.dev.standbot.constant.keyboard;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 /**
  * Created with IntelliJ IDEA.
  * User: marowak
- * Date: 28.05.2022
- * Time: 23:36
+ * Date: 29.05.2022
+ * Time: 17:49
  */
-@Getter
-@AllArgsConstructor
-public enum StandInfoCommand implements Commandable {
-    CHANGE_STATUS("Изменить статус");
+public class StandInfoCommand implements Commandable {
+    public static final String STAND_INFO_PREFIX = "STAND_INFO_PREFIX_";
 
-    private final String showName;
-
-    public static StandInfoCommand getByName(String name) {
-        for (StandInfoCommand command : StandInfoCommand.values()) {
-            if(command.name().equals(name)) {
-                return command;
-            }
-        }
-
-        return null;
-    }
 }

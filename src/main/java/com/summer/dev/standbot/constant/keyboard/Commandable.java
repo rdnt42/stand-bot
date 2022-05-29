@@ -7,5 +7,7 @@ package com.summer.dev.standbot.constant.keyboard;
  * Time: 14:01
  */
 public interface Commandable {
-
+    static boolean isCommand(String prefix, String name) {
+        return name.startsWith(prefix);
+    }
 }

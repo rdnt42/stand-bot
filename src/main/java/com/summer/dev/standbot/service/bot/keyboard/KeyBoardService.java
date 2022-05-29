@@ -13,7 +13,12 @@ public interface KeyBoardService<T extends ReplyKeyboard> {
 
     T getStandSelectMenuKeyBoard();
 
-    T getStandInfoMenuKeyBoard();
+    T getStandInfoMenuKeyBoard(String standName);
 
-    T getEquipmentSelectMenuKeyBoard();
+    T getEquipmentSelectForStandMenuKeyBoard(String standName);
+
+    T getStatusSelectForEquipmentKeyBoard(String arguments);
+
+    T getChangeStatusKeyBoard();
+
 }

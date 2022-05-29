@@ -1,9 +1,11 @@
 package com.summer.dev.standbot.service;
 
-import com.summer.dev.standbot.constant.EquipmentStateEnum;
+import com.summer.dev.standbot.constant.EquipmentStatusEnum;
 import com.summer.dev.standbot.constant.TelegramEmoji;
+import com.summer.dev.standbot.constant.keyboard.ChangeStatusCommand;
+import com.summer.dev.standbot.constant.keyboard.EquipmentSelectCommand;
 import com.summer.dev.standbot.entity.Stand;
-import com.summer.dev.standbot.entity.EquipmentState;
+import com.summer.dev.standbot.entity.Status;
 import com.summer.dev.standbot.repository.StandRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,14 +29,6 @@ public class StandServiceImpl implements StandService {
     public Stand get(Long id) {
         return standRepository.findById(id)
                 .orElseThrow(() -> new NullPointerException("Stand doesn't exist, id: " + id));
-    }
-
-    @Override
-    public void setStatus(Long id, EquipmentState status) {
-        Stand stand = get(id);
-        stand.setStandStatus(status);
-
-        standRepository.save(stand);
     }
 
     @Override
@@ -82,12 +76,66 @@ public class StandServiceImpl implements StandService {
         return standRepository.getStandsNames();
     }
 
-    private String getEmojiFromStatus(EquipmentState status) {
-        if (EquipmentStateEnum.EQUIPMENT_STATE_AVAILABLE.equalsStatus(status)) {
+    @Override
+    public void changeStatus(String standName, String equipmentName, String action) {
+        Stand stand = getByName(standName);
+        EquipmentStatusEnum newStatus = getStatusFromAction(action);
+
+        updateStatusFromCommand(stand, equipmentName, newStatus);
+        updateGeneralStatusIfNeed(stand, equipmentName, newStatus);
+        
+        standRepository.save(stand);
+    }
+
+    private EquipmentStatusEnum getStatusFromAction(String action) {
+        return switch (action) {
+            case ChangeStatusCommand.TO_AVAILABLE -> EquipmentStatusEnum.EQUIPMENT_STATE_AVAILABLE;
+            case ChangeStatusCommand.TO_UNAVAILABLE -> EquipmentStatusEnum.EQUIPMENT_STATE_UNAVAILABLE;
+            case ChangeStatusCommand.TO_UNSTABLE -> EquipmentStatusEnum.EQUIPMENT_STATE_UNSTABLE;
+            default -> throw new IllegalArgumentException("Unknown action: " + action);
+        };
+    }
+
+    private void updateStatusFromCommand(Stand stand, String equipmentName, EquipmentStatusEnum newStatus) {
+        if (EquipmentSelectCommand.STAND.equals(equipmentName)) {
+            stand.setStandStatusId(newStatus.getId());
+        } else if (EquipmentSelectCommand.METRIC.equals(equipmentName)) {
+            stand.setMetricsStatusId(newStatus.getId());
+        } else if (EquipmentSelectCommand.DEPENDENT_SESSION.equals(equipmentName)) {
+            stand.setDependentSessionStatusId(newStatus.getId());
+        } else if (EquipmentSelectCommand.INDEPENDENT_SESSION.equals(equipmentName)) {
+            stand.setIndependentSessionStatusId(newStatus.getId());
+        } else {
+            throw new IllegalArgumentException("Unknown equipment name: " + equipmentName);
+        }
+    }
+
+    private void updateGeneralStatusIfNeed(Stand stand, String equipmentName, EquipmentStatusEnum newStatus) {
+        if (isStandUnstableDueTuEquipment(equipmentName, newStatus)) {
+            stand.setStandStatusId(EquipmentStatusEnum.EQUIPMENT_STATE_UNSTABLE.getId());
+        } else if (isStandStableDueTuEquipment(equipmentName, newStatus)) {
+            stand.setMetricsStatusId(EquipmentStatusEnum.EQUIPMENT_STATE_AVAILABLE.getId());
+            stand.setIndependentSessionStatusId(EquipmentStatusEnum.EQUIPMENT_STATE_AVAILABLE.getId());
+            stand.setDependentSessionStatusId(EquipmentStatusEnum.EQUIPMENT_STATE_AVAILABLE.getId());
+        }
+    }
+
+    private boolean isStandUnstableDueTuEquipment(String equipmentName, EquipmentStatusEnum newStatus) {
+        return !EquipmentSelectCommand.STAND.equals(equipmentName) &&
+                EquipmentStatusEnum.EQUIPMENT_STATE_AVAILABLE != newStatus;
+    }
+
+    private boolean isStandStableDueTuEquipment(String equipmentName, EquipmentStatusEnum newStatus) {
+        return EquipmentSelectCommand.STAND.equals(equipmentName) &&
+                EquipmentStatusEnum.EQUIPMENT_STATE_AVAILABLE == newStatus;
+    }
+
+    private String getEmojiFromStatus(Status status) {
+        if (EquipmentStatusEnum.EQUIPMENT_STATE_AVAILABLE.equalsStatus(status)) {
             return TelegramEmoji.OK_MARK.toUnicode();
-        } else if (EquipmentStateEnum.EQUIPMENT_STATE_UNAVAILABLE.equalsStatus(status)) {
+        } else if (EquipmentStatusEnum.EQUIPMENT_STATE_UNAVAILABLE.equalsStatus(status)) {
             return TelegramEmoji.ERROR_CHECK_MARK.toUnicode();
-        } else if (EquipmentStateEnum.EQUIPMENT_STATE_UNSTABLE.equalsStatus(status)) {
+        } else if (EquipmentStatusEnum.EQUIPMENT_STATE_UNSTABLE.equalsStatus(status)) {
             return TelegramEmoji.WARNING_CHECK_MARK.toUnicode();
         }
 

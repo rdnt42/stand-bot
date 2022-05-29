@@ -1,6 +1,6 @@
 package com.summer.dev.standbot.constant;
 
-import com.summer.dev.standbot.entity.EquipmentState;
+import com.summer.dev.standbot.entity.Status;
 import lombok.Getter;
 
 /**
@@ -10,7 +10,7 @@ import lombok.Getter;
  * Time: 11:46
  */
 @Getter
-public enum EquipmentStateEnum {
+public enum EquipmentStatusEnum {
     EQUIPMENT_STATE_AVAILABLE(1, "Доступен"),
     EQUIPMENT_STATE_UNAVAILABLE(2, "Недоступен"),
     EQUIPMENT_STATE_UNSTABLE(3, "Сбои в работе");
@@ -18,12 +18,12 @@ public enum EquipmentStateEnum {
     private final int id;
     private final String name;
 
-    EquipmentStateEnum(int id, String name) {
+    EquipmentStatusEnum(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public boolean equalsStatus(EquipmentState status) {
+    public boolean equalsStatus(Status status) {
         return status.getId() == id;
     }
 }

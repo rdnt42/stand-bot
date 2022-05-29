@@ -1,31 +1,16 @@
 package com.summer.dev.standbot.constant.keyboard;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 /**
  * Created with IntelliJ IDEA.
  * User: marowak
- * Date: 28.05.2022
- * Time: 23:57
+ * Date: 29.05.2022
+ * Time: 17:57
  */
-@AllArgsConstructor
-@Getter
-public enum EquipmentSelectCommand implements Commandable {
-    STATUS_STAND("Статус стенда"),
-    STATUS_METRIC("Статус метрик"),
-    STATUS_INDEPENDENT_SESSION("Статус независимой сессии"),
-    STATUS_DEPENDENT_SESSION("Статус зависимой сессии")
-    ;
-    private final String showName;
-
-    public static EquipmentSelectCommand getByName(String name) {
-        for (EquipmentSelectCommand command : EquipmentSelectCommand.values()) {
-            if(command.name().equals(name)) {
-                return command;
-            }
-        }
-
-        return null;
-    }
+public final class EquipmentSelectCommand implements Commandable {
+    public static final String EQUIPMENT_SELECT_PREFIX = "EQUIPMENT_SELECT_PREFIX_";
+    // FIXME dirty hack for split working
+    public static final String STAND = "STAND_NAME";
+    public static final String METRIC = "METRIC_NAME";
+    public static final String INDEPENDENT_SESSION = "INDEPENDENT_SESSION";
+    public static final String DEPENDENT_SESSION = "DEPENDENT_SESSION";
 }
