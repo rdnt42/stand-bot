@@ -44,11 +44,16 @@ public class InlineKeyBoardServiceImpl implements KeyBoardService<InlineKeyboard
         List<List<InlineKeyboardButton>> lists = new ArrayList<>();
 
         List<String> standsNames = standService.getStandsNames();
-        for (String standsName : standsNames) {
-            InlineKeyboardButton button = getStandNameButton(standsName);
-            List<InlineKeyboardButton> row = Collections.singletonList(button);
 
-            lists.add(row);
+        List<InlineKeyboardButton> row = new ArrayList<>();
+        for (int i = 0; i < standsNames.size(); i++) {
+            if (i % 2 == 0) {
+                row = new ArrayList<>();
+                lists.add(row);
+            }
+
+            InlineKeyboardButton button = getStandNameButton(standsNames.get(i));
+            row.add(button);
         }
 
         return InlineKeyboardMarkup.builder()
@@ -116,7 +121,7 @@ public class InlineKeyBoardServiceImpl implements KeyBoardService<InlineKeyboard
     private InlineKeyboardButton getStandNameButton(String standName) {
         return InlineKeyboardButton.builder()
                 .text(standName)
-                .callbackData(StandSelectTemplateCommand.STAND_NAME_PREFIX + standName.toUpperCase())
+                .callbackData(StandSelectTemplateCommand.STAND_SELECT_PREFIX + standName.toUpperCase())
                 .build();
     }
 

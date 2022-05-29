@@ -1,5 +1,6 @@
 package com.summer.dev.standbot.constant.keyboard;
 
+import com.summer.dev.standbot.constant.menu.MainMenu;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,14 +13,14 @@ import lombok.Setter;
 @Getter
 @Setter
 public final class StandSelectTemplateCommand implements Commandable {
-    public static final String STAND_NAME_PREFIX = "STAND_NAME_PREFIX_";
+    public static final String STAND_SELECT_PREFIX = "STAND_SELECT_PREFIX_";
     private String standName;
 
     public StandSelectTemplateCommand(String commandName) {
-        this.standName = commandName.replace(STAND_NAME_PREFIX, "");
+        this.standName = commandName.replace(STAND_SELECT_PREFIX, "");
     }
 
     public static boolean isContainsStandName(String name) {
-        return name.contains(STAND_NAME_PREFIX);
+        return name.contains(STAND_SELECT_PREFIX);
     }
 }

@@ -17,7 +17,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
  */
 @Slf4j
 @AllArgsConstructor
-@Service("standNameCommandService")
+@Service
 public class StandSelectCommandServiceImpl implements CommandService<StandSelectTemplateCommand> {
     private final KeyBoardService<InlineKeyboardMarkup> keyBoardService;
     private final StandService standService;
@@ -25,22 +25,7 @@ public class StandSelectCommandServiceImpl implements CommandService<StandSelect
     @Override
     public SendMessage getMessageFromCommand(StandSelectTemplateCommand command) {
         log.debug("Get command: " + command.getStandName());
-
-        try {
-            return getStandInfoMessage(command.getStandName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return getMainMenuMessage();
-    }
-
-    private SendMessage getMainMenuMessage() {
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setText(standService.getStandsInfo());
-        sendMessage.setReplyMarkup(keyBoardService.getMainMenuKeyBoard());
-
-        return sendMessage;
+        return getStandInfoMessage(command.getStandName());
     }
 
     private SendMessage getStandInfoMessage(String standName) {

@@ -12,8 +12,8 @@ import lombok.Getter;
 @Getter
 public enum EquipmentStateEnum {
     EQUIPMENT_STATE_AVAILABLE(1, "Доступен"),
-    EQUIPMENT_STATE_NOT_AVAILABLE(2, "Недоступен"),
-    EQUIPMENT_STATE_UNSTABLE(3, "Нестабилен");
+    EQUIPMENT_STATE_UNAVAILABLE(2, "Недоступен"),
+    EQUIPMENT_STATE_UNSTABLE(3, "Сбои в работе");
 
     private final int id;
     private final String name;

@@ -22,32 +22,58 @@ public class CallbackQueryHandler {
     private final CommandService<MainMenuKeyboardCommand> mainMenuCommandService;
     private final CommandService<StandSelectTemplateCommand> standSelectCommandService;
     private final CommandService<StandInfoCommand> standInfoCommandCommandService;
+    private final CommandService<EquipmentStateCommand> equipmentStateCommandCommandService;
 
     public SendMessage processCallbackQuery(CallbackQuery buttonQuery) {
         final String chatId = buttonQuery.getMessage().getChatId().toString();
 
         String data = buttonQuery.getData();
 
-        SendMessage sendMessage = getMessageByCommand(data);
+        SendMessage sendMessage = trySendMessageByCommand(data);
         sendMessage.setChatId(chatId);
 
         return sendMessage;
     }
 
+    private SendMessage trySendMessageByCommand(String data) {
+        try {
+            return getMessageByCommand(data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return mainMenuCommandService.getMessageFromCommand(MainMenuKeyboardCommand.MAIN_MENU);
+        }
+    }
 
     private SendMessage getMessageByCommand(String data) {
         Commandable command;
         if ((command = MainMenuKeyboardCommand.getByName(data)) != null) {
-            return mainMenuCommandService.getMessageFromCommand((MainMenuKeyboardCommand) command);
+            return getMessageFromMainMenu(command);
         } else if (StandSelectTemplateCommand.isContainsStandName(data)) {
-            StandSelectTemplateCommand template = new StandSelectTemplateCommand(data);
-
-            return standSelectCommandService.getMessageFromCommand(template);
+            return getMessageFromStandSelect(data);
         } else if ((command = StandInfoCommand.getByName(data)) != null) {
-            return standInfoCommandCommandService.getMessageFromCommand((StandInfoCommand) command);
+            return getMessageFromStandInfo(command);
+        } else if ((command = EquipmentStateCommand.getByName(data)) != null) {
+            return getMessageFromEquipmentState(command);
+        } else {
+            throw new IllegalArgumentException("Unknown command: " + data);
         }
+    }
 
-            log.warn("Unknown command: {}. Return to main menu", data);
-        return mainMenuCommandService.getMessageFromCommand(MainMenuKeyboardCommand.MAIN_MENU);
+    private SendMessage getMessageFromMainMenu(Commandable command) {
+        return mainMenuCommandService.getMessageFromCommand((MainMenuKeyboardCommand) command);
+    }
+
+    private SendMessage getMessageFromStandSelect(String data) {
+        StandSelectTemplateCommand template = new StandSelectTemplateCommand(data);
+
+        return standSelectCommandService.getMessageFromCommand(template);
+    }
+
+    private SendMessage getMessageFromStandInfo(Commandable command) {
+        return standInfoCommandCommandService.getMessageFromCommand((StandInfoCommand) command);
+    }
+
+    private SendMessage getMessageFromEquipmentState(Commandable command) {
+        return equipmentStateCommandCommandService.getMessageFromCommand((EquipmentStateCommand) command);
     }
 }

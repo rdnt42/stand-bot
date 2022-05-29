@@ -25,7 +25,7 @@ public class MainMenuCommandServiceImpl implements CommandService<MainMenuKeyboa
     public SendMessage getMessageFromCommand(MainMenuKeyboardCommand command) {
         return switch (command) {
             case MAIN_MENU -> getMainMenuMessage();
-            case STAND_SELECT -> getShowStandsStatusesMessage();
+            case STAND_SELECT -> getShowStandsStatesMessage();
         };
     }
 
@@ -37,7 +37,7 @@ public class MainMenuCommandServiceImpl implements CommandService<MainMenuKeyboa
         return sendMessage;
     }
 
-    private SendMessage getShowStandsStatusesMessage() {
+    private SendMessage getShowStandsStatesMessage() {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setParseMode(ParseModeTelegramEnum.PARSE_MODE_MARKDOWN.getName());
         sendMessage.setText("*Выберите стенд*");

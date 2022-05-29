@@ -85,7 +85,7 @@ public class StandServiceImpl implements StandService {
     private String getEmojiFromStatus(EquipmentState status) {
         if (EquipmentStateEnum.EQUIPMENT_STATE_AVAILABLE.equalsStatus(status)) {
             return TelegramEmoji.OK_MARK.toUnicode();
-        } else if (EquipmentStateEnum.EQUIPMENT_STATE_NOT_AVAILABLE.equalsStatus(status)) {
+        } else if (EquipmentStateEnum.EQUIPMENT_STATE_UNAVAILABLE.equalsStatus(status)) {
             return TelegramEmoji.ERROR_CHECK_MARK.toUnicode();
         } else if (EquipmentStateEnum.EQUIPMENT_STATE_UNSTABLE.equalsStatus(status)) {
             return TelegramEmoji.WARNING_CHECK_MARK.toUnicode();
