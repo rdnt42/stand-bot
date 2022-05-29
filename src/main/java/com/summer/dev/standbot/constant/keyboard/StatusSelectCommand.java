@@ -15,7 +15,4 @@ import lombok.Setter;
 @Setter
 public final class StatusSelectCommand implements Commandable {
     public static final String STATUS_SELECT_PREFIX = "STATUS_SELECT_PREFIX_";
-
-    private final String showName;
-    private String postfixParam;
 }

@@ -8,6 +8,7 @@ package com.summer.dev.standbot.constant.keyboard;
  */
 public class MainMenuCommand implements Commandable {
     public static final String MAIN_MENU = "MAIN_MENU";
+    public static final String MAIN_MENU_NAME = "Основное меню";
 
     private MainMenuCommand() {
     }

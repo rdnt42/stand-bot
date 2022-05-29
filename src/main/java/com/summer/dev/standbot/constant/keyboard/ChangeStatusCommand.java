@@ -19,6 +19,12 @@ public final class ChangeStatusCommand implements Commandable {
     public static final String TO_UNAVAILABLE = "TO_UNAVAILABLE";
     public static final String TO_UNSTABLE = "TO_UNSTABLE";
 
+    public static final String TO_AVAILABLE_NAME = "Доступен";
+    public static final String TO_UNAVAILABLE_NAME = "Недоступен";
+    public static final String TO_UNSTABLE_NAME = "Сбои в работе";
+
+    public static final String CHANGE_STATUS_NAME = "Изменить статус";
+
     private final String showName;
     private String postfixParam;
 }

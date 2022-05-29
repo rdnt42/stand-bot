@@ -133,21 +133,21 @@ public class InlineKeyBoardServiceImpl implements KeyBoardService<InlineKeyboard
 
     private InlineKeyboardButton getStandSelectButton() {
         return InlineKeyboardButton.builder()
-                .text(StandSelectCommand.STAND_SELECT)
+                .text(StandSelectCommand.STAND_SELECT_NAME)
                 .callbackData(StandSelectCommand.STAND_SELECT)
                 .build();
     }
 
     private InlineKeyboardButton getEquipmentSelectButton(String standName) {
         return InlineKeyboardButton.builder()
-                .text(EquipmentSelectCommand.EQUIPMENT_SELECT_PREFIX)
+                .text(ChangeStatusCommand.CHANGE_STATUS_NAME)
                 .callbackData(EquipmentSelectCommand.EQUIPMENT_SELECT_PREFIX + standName)
                 .build();
     }
 
     private InlineKeyboardButton getMainMenuButton() {
         return InlineKeyboardButton.builder()
-                .text(MainMenuCommand.MAIN_MENU)
+                .text(MainMenuCommand.MAIN_MENU_NAME)
                 .callbackData(MainMenuCommand.MAIN_MENU)
                 .build();
     }
@@ -161,53 +161,50 @@ public class InlineKeyBoardServiceImpl implements KeyBoardService<InlineKeyboard
 
     private InlineKeyboardButton getSelectStatusStandStatusButton(String standName) {
         return InlineKeyboardButton.builder()
-                .text(EquipmentSelectCommand.STAND)
+                .text(EquipmentSelectCommand.STAND_NAME)
                 .callbackData(StatusSelectCommand.STATUS_SELECT_PREFIX + EquipmentSelectCommand.STAND + "_" + standName)
                 .build();
     }
 
     private InlineKeyboardButton getSelectStatusMetricStatusButton(String standName) {
         return InlineKeyboardButton.builder()
-                .text(EquipmentSelectCommand.METRIC)
+                .text(EquipmentSelectCommand.METRIC_NAME)
                 .callbackData(StatusSelectCommand.STATUS_SELECT_PREFIX + EquipmentSelectCommand.METRIC + "_" + standName)
                 .build();
     }
 
     private InlineKeyboardButton getSelectStatusDependentSessionStatusButton(String standName) {
         return InlineKeyboardButton.builder()
-                .text(EquipmentSelectCommand.DEPENDENT_SESSION)
+                .text(EquipmentSelectCommand.DEPENDENT_SESSION_NAME)
                 .callbackData(StatusSelectCommand.STATUS_SELECT_PREFIX + EquipmentSelectCommand.DEPENDENT_SESSION + "_" + standName)
                 .build();
     }
 
     private InlineKeyboardButton getSelectStatusIndependentSessionStatusButton(String standName) {
         return InlineKeyboardButton.builder()
-                .text(EquipmentSelectCommand.INDEPENDENT_SESSION)
+                .text(EquipmentSelectCommand.INDEPENDENT_SESSION_NAME)
                 .callbackData(StatusSelectCommand.STATUS_SELECT_PREFIX + EquipmentSelectCommand.INDEPENDENT_SESSION + "_" + standName)
                 .build();
     }
 
     private InlineKeyboardButton getChangeStatusToAvailableButton(String standParams) {
         return InlineKeyboardButton.builder()
-                .text(ChangeStatusCommand.TO_AVAILABLE)
+                .text(ChangeStatusCommand.TO_AVAILABLE_NAME)
                 .callbackData(ChangeStatusCommand.CHANGE_STATUS_PREFIX + ChangeStatusCommand.TO_AVAILABLE + "_" + standParams)
                 .build();
-
     }
 
     private InlineKeyboardButton getChangeStatusToUnavailableButton(String standParams) {
         return InlineKeyboardButton.builder()
-                .text(ChangeStatusCommand.TO_UNAVAILABLE)
+                .text(ChangeStatusCommand.TO_UNAVAILABLE_NAME)
                 .callbackData(ChangeStatusCommand.CHANGE_STATUS_PREFIX + ChangeStatusCommand.TO_UNAVAILABLE + "_" + standParams)
                 .build();
-
     }
 
     private InlineKeyboardButton getChangeStatusToUnstableButton(String standParams) {
         return InlineKeyboardButton.builder()
-                .text(ChangeStatusCommand.TO_UNSTABLE)
+                .text(ChangeStatusCommand.TO_UNSTABLE_NAME)
                 .callbackData(ChangeStatusCommand.CHANGE_STATUS_PREFIX + ChangeStatusCommand.TO_UNSTABLE + "_" + standParams)
                 .build();
-
     }
 }

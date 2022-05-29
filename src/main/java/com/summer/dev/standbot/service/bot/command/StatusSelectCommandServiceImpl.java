@@ -31,7 +31,7 @@ public class StatusSelectCommandServiceImpl implements CommandService {
     private SendMessage getChangeStatusMenuMessage(String arguments) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setParseMode(ParseModeTelegramEnum.PARSE_MODE_MARKDOWN.getName());
-        sendMessage.setText("*Выберите новы статус*");
+        sendMessage.setText("*Выберите новый статус*");
         sendMessage.setReplyMarkup(keyBoardService.getStatusSelectForEquipmentKeyBoard(arguments));
 
         return sendMessage;

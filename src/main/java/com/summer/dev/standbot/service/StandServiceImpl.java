@@ -83,7 +83,7 @@ public class StandServiceImpl implements StandService {
 
         updateStatusFromCommand(stand, equipmentName, newStatus);
         updateGeneralStatusIfNeed(stand, equipmentName, newStatus);
-        
+
         standRepository.save(stand);
     }
 
@@ -117,6 +117,10 @@ public class StandServiceImpl implements StandService {
             stand.setMetricsStatusId(EquipmentStatusEnum.EQUIPMENT_STATE_AVAILABLE.getId());
             stand.setIndependentSessionStatusId(EquipmentStatusEnum.EQUIPMENT_STATE_AVAILABLE.getId());
             stand.setDependentSessionStatusId(EquipmentStatusEnum.EQUIPMENT_STATE_AVAILABLE.getId());
+        } else if (isStandUnavailable(equipmentName, newStatus)) {
+            stand.setMetricsStatusId(EquipmentStatusEnum.EQUIPMENT_STATE_UNAVAILABLE.getId());
+            stand.setIndependentSessionStatusId(EquipmentStatusEnum.EQUIPMENT_STATE_UNAVAILABLE.getId());
+            stand.setDependentSessionStatusId(EquipmentStatusEnum.EQUIPMENT_STATE_UNAVAILABLE.getId());
         }
     }
 
@@ -128,6 +132,11 @@ public class StandServiceImpl implements StandService {
     private boolean isStandStableDueTuEquipment(String equipmentName, EquipmentStatusEnum newStatus) {
         return EquipmentSelectCommand.STAND.equals(equipmentName) &&
                 EquipmentStatusEnum.EQUIPMENT_STATE_AVAILABLE == newStatus;
+    }
+
+    private boolean isStandUnavailable(String equipmentName, EquipmentStatusEnum newStatus) {
+        return EquipmentSelectCommand.STAND.equals(equipmentName) &&
+                EquipmentStatusEnum.EQUIPMENT_STATE_UNAVAILABLE == newStatus;
     }
 
     private String getEmojiFromStatus(Status status) {

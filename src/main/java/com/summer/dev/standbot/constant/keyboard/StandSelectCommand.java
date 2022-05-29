@@ -13,4 +13,6 @@ import lombok.Setter;
 @Setter
 public final class StandSelectCommand implements Commandable {
     public static final String STAND_SELECT = "STAND_SELECT";
+
+    public static final String STAND_SELECT_NAME = "Выбор стенда";
 }

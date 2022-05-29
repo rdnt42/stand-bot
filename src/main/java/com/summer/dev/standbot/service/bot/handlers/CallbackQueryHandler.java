@@ -45,6 +45,8 @@ public class CallbackQueryHandler {
 
         SendMessage sendMessage = trySendMessageByCommand(data);
         sendMessage.setChatId(chatId);
+        log.debug("Send answer to chatId: {}, name: {}",
+                chatId, buttonQuery.getFrom().getFirstName());
 
         return sendMessage;
     }
