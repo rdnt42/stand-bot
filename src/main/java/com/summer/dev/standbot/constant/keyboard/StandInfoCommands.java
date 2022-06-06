@@ -13,5 +13,6 @@ import lombok.Getter;
 @Getter
 public enum StandInfoCommands {
     STAND_INFO("Информация о стенде");
+
     private final String dsc;
 }

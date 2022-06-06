@@ -1,12 +1,8 @@
 package com.summer.dev.standbot.service.bot.command.parser;
 
+import com.summer.dev.standbot.constant.keyboard.CommandTags;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.Locale;
-import java.util.regex.MatchResult;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,14 +18,26 @@ public class CommandParserService {
     private static final String PREFIX_COMMAND_WITH_THREE_PARAMS = "(\\w+_PREFIX)_(\\w+)_(\\w+)_(\\w+)";
     private static final String WITHOUT_PREFIX_COMMAND = "(\\W*_PREFIX_)(\\W*)";
 
-    public String parseStandName(String prefix, String command) {
-        String standName = command.replace(prefix, "");
+    public String parseStandName(String command) {
+        String regex = CommandTags.TAG_END.getTag();
+        String[] strings = command.split(regex);
 
-        if (standName.isEmpty()) {
-            throw new IllegalArgumentException("Cannot parse stand name from command: " + command);
+        if (strings.length == 0) {
+            throw new IllegalArgumentException("Cannot parse command: " + command);
         }
 
-        return standName;
+        return strings[strings.length - 1];
+    }
+
+    public String parseCommand(String command) {
+        String regex = CommandTags.TAG_END.getTag();
+        String[] strings = command.split(regex);
+
+        if (strings.length == 0) {
+            throw new IllegalArgumentException("Cannot parse command: " + command);
+        }
+
+        return strings[strings.length - 1];
     }
 
     public String getArgumentsWithoutPrefixCommand(String command) {

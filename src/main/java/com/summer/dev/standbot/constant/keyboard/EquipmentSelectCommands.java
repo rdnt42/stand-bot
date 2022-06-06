@@ -11,11 +11,11 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public enum EquipmentSelectCommands {
+public enum EquipmentSelectCommands implements Commandable {
     STAND("Стенд"),
     METRIC("Метрики"),
     INDEPENDENT_SESSION("Независимая сессия"),
     DEPENDENT_SESSION("Зависимая сессия");
-    
+
     private final String dsc;
 }

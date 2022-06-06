@@ -1,7 +1,9 @@
 package com.summer.dev.standbot.service.bot.command;
 
 import com.summer.dev.standbot.constant.ParseModeTelegramEnum;
-import com.summer.dev.standbot.constant.keyboard.StandSelectCommand;
+import com.summer.dev.standbot.constant.keyboard.StandSelectCommands;
+import com.summer.dev.standbot.service.StandService;
+import com.summer.dev.standbot.service.bot.command.parser.CommandParserService;
 import com.summer.dev.standbot.service.bot.keyboard.KeyBoardService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,23 +21,22 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 @AllArgsConstructor
 @Service("standSelectCommandService")
 public class StandSelectCommandServiceImpl implements CommandService {
-
+    private final CommandParserService commandParserService;
     private final KeyBoardService<InlineKeyboardMarkup> keyBoardService;
+    private final StandService standService;
 
     @Override
     public SendMessage getMessageFromCommand(String command) {
-        if (StandSelectCommand.STAND_SELECT.equals(command)) {
-            return getShowStandsStatesMessage();
-        }
+        String standName = commandParserService.parseStandName(command);
 
-        throw new IllegalStateException("Unexpected value: " + command);
+        return getStandInfoMessage(standName);
     }
 
-    private SendMessage getShowStandsStatesMessage() {
+    private SendMessage getStandInfoMessage(String standName) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setParseMode(ParseModeTelegramEnum.PARSE_MODE_MARKDOWN.getName());
-        sendMessage.setText("*Выберите стенд*");
-        sendMessage.setReplyMarkup(keyBoardService.getStandSelectMenuKeyBoard());
+        sendMessage.setText(standService.getStandInfo(standName));
+        sendMessage.setReplyMarkup(keyBoardService.getStandInfoMenuKeyBoard(standName));
 
         return sendMessage;
     }

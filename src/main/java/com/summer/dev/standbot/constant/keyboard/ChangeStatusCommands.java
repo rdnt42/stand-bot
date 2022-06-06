@@ -11,8 +11,10 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public enum ChangeStatusCommands {
-    CHANGE_STATUS("Изменить статус");
+public enum ChangeStatusCommands implements Commandable {
+    CHANGE_STATUS_TO_AVAILABLE("Доступен"),
+    CHANGE_STATUS_TO_UNAVAILABLE("Недоступен"),
+    CHANGE_STATUS_TO_UNSTABLE("Сбои в работе");
 
     private final String dsc;
 }

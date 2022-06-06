@@ -6,15 +6,13 @@ import lombok.Getter;
 /**
  * Created with IntelliJ IDEA.
  * User: marowak
- * Date: 31.05.2022
- * Time: 0:18
+ * Date: 01.06.2022
+ * Time: 23:10
  */
 @AllArgsConstructor
 @Getter
-public enum StatusSelectCommands implements Commandable {
-    TO_AVAILABLE("Доступен"),
-    TO_UNAVAILABLE("Недоступен"),
-    TO_UNSTABLE("Сбои в работе");
+public enum StatusSelectMenuCommands implements Commandable {
+    STATUS_SELECT_MENU("Изменить статус");
 
     private final String dsc;
 }

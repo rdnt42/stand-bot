@@ -11,7 +11,7 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public enum MainMenuCommands {
+public enum MainMenuCommands implements Commandable {
     MAIN_MENU("Основное меню");
 
     private final String dsc;

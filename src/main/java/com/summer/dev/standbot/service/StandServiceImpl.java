@@ -2,8 +2,6 @@ package com.summer.dev.standbot.service;
 
 import com.summer.dev.standbot.constant.EquipmentStatusEnum;
 import com.summer.dev.standbot.constant.TelegramEmoji;
-import com.summer.dev.standbot.constant.keyboard.ChangeStatusCommand;
-import com.summer.dev.standbot.constant.keyboard.EquipmentSelectCommand;
 import com.summer.dev.standbot.entity.Stand;
 import com.summer.dev.standbot.entity.Status;
 import com.summer.dev.standbot.repository.StandRepository;
@@ -88,26 +86,27 @@ public class StandServiceImpl implements StandService {
     }
 
     private EquipmentStatusEnum getStatusFromAction(String action) {
-        return switch (action) {
-            case ChangeStatusCommand.TO_AVAILABLE -> EquipmentStatusEnum.EQUIPMENT_STATE_AVAILABLE;
-            case ChangeStatusCommand.TO_UNAVAILABLE -> EquipmentStatusEnum.EQUIPMENT_STATE_UNAVAILABLE;
-            case ChangeStatusCommand.TO_UNSTABLE -> EquipmentStatusEnum.EQUIPMENT_STATE_UNSTABLE;
-            default -> throw new IllegalArgumentException("Unknown action: " + action);
-        };
+        return null;
+//        return switch (action) {
+//            case ChangeStatusCommand.TO_AVAILABLE -> EquipmentStatusEnum.EQUIPMENT_STATE_AVAILABLE;
+//            case ChangeStatusCommand.TO_UNAVAILABLE -> EquipmentStatusEnum.EQUIPMENT_STATE_UNAVAILABLE;
+//            case ChangeStatusCommand.TO_UNSTABLE -> EquipmentStatusEnum.EQUIPMENT_STATE_UNSTABLE;
+//            default -> throw new IllegalArgumentException("Unknown action: " + action);
+//        };
     }
 
     private void updateStatusFromCommand(Stand stand, String equipmentName, EquipmentStatusEnum newStatus) {
-        if (EquipmentSelectCommand.STAND.equals(equipmentName)) {
-            stand.setStandStatusId(newStatus.getId());
-        } else if (EquipmentSelectCommand.METRIC.equals(equipmentName)) {
-            stand.setMetricsStatusId(newStatus.getId());
-        } else if (EquipmentSelectCommand.DEPENDENT_SESSION.equals(equipmentName)) {
-            stand.setDependentSessionStatusId(newStatus.getId());
-        } else if (EquipmentSelectCommand.INDEPENDENT_SESSION.equals(equipmentName)) {
-            stand.setIndependentSessionStatusId(newStatus.getId());
-        } else {
-            throw new IllegalArgumentException("Unknown equipment name: " + equipmentName);
-        }
+//        if (EquipmentSelectCommand.STAND.equals(equipmentName)) {
+//            stand.setStandStatusId(newStatus.getId());
+//        } else if (EquipmentSelectCommand.METRIC.equals(equipmentName)) {
+//            stand.setMetricsStatusId(newStatus.getId());
+//        } else if (EquipmentSelectCommand.DEPENDENT_SESSION.equals(equipmentName)) {
+//            stand.setDependentSessionStatusId(newStatus.getId());
+//        } else if (EquipmentSelectCommand.INDEPENDENT_SESSION.equals(equipmentName)) {
+//            stand.setIndependentSessionStatusId(newStatus.getId());
+//        } else {
+//            throw new IllegalArgumentException("Unknown equipment name: " + equipmentName);
+//        }
     }
 
     private void updateGeneralStatusIfNeed(Stand stand, String equipmentName, EquipmentStatusEnum newStatus) {
@@ -125,18 +124,21 @@ public class StandServiceImpl implements StandService {
     }
 
     private boolean isStandUnstableDueTuEquipment(String equipmentName, EquipmentStatusEnum newStatus) {
-        return !EquipmentSelectCommand.STAND.equals(equipmentName) &&
-                EquipmentStatusEnum.EQUIPMENT_STATE_AVAILABLE != newStatus;
+//        return !EquipmentSelectCommand.STAND.equals(equipmentName) &&
+//                EquipmentStatusEnum.EQUIPMENT_STATE_AVAILABLE != newStatus;
+        return false;
     }
 
     private boolean isStandStableDueTuEquipment(String equipmentName, EquipmentStatusEnum newStatus) {
-        return EquipmentSelectCommand.STAND.equals(equipmentName) &&
-                EquipmentStatusEnum.EQUIPMENT_STATE_AVAILABLE == newStatus;
+//        return EquipmentSelectCommand.STAND.equals(equipmentName) &&
+//                EquipmentStatusEnum.EQUIPMENT_STATE_AVAILABLE == newStatus;
+        return false;
     }
 
     private boolean isStandUnavailable(String equipmentName, EquipmentStatusEnum newStatus) {
-        return EquipmentSelectCommand.STAND.equals(equipmentName) &&
-                EquipmentStatusEnum.EQUIPMENT_STATE_UNAVAILABLE == newStatus;
+        return false;
+//        return EquipmentSelectCommand.STAND.equals(equipmentName) &&
+//                EquipmentStatusEnum.EQUIPMENT_STATE_UNAVAILABLE == newStatus;
     }
 
     private String getEmojiFromStatus(Status status) {

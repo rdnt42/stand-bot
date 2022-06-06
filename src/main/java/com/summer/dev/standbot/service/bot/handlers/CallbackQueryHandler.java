@@ -23,11 +23,11 @@ public class CallbackQueryHandler {
     @Qualifier("mainMenuCommandService")
     private final CommandService mainMenuCommandService;
 
+    @Qualifier("standSelectMenuCommandService")
+    private final CommandService standSelectMenuCommandService;
+
     @Qualifier("standSelectCommandService")
     private final CommandService standSelectCommandService;
-
-    @Qualifier("standInfoCommandService")
-    private final CommandService standInfoCommandService;
 
     @Qualifier("equipmentSelectCommandService")
     private final CommandService equipmentSelectCommandService;
@@ -56,25 +56,27 @@ public class CallbackQueryHandler {
             return getMessageByCommand(data);
         } catch (Exception e) {
             e.printStackTrace();
-            return mainMenuCommandService.getMessageFromCommand(MainMenuCommand.MAIN_MENU);
+
+            return mainMenuCommandService.getMessageFromCommand(MainMenuCommands.MAIN_MENU.name());
         }
     }
 
     private SendMessage getMessageByCommand(String command) {
         log.debug("Got command: " + command);
-        if (Commandable.isCommand(MainMenuCommand.MAIN_MENU, command)) {
+        if (Commandable.isCommand(MainMenuCommands.MAIN_MENU.name(), command)) {
             return mainMenuCommandService.getMessageFromCommand(command);
-        } else if (Commandable.isCommand(StandSelectCommand.STAND_SELECT, command)) {
+        } else if (Commandable.isCommand(StandSelectMenuCommands.STAND_SELECT_MENU.name(), command)) {
+            return standSelectMenuCommandService.getMessageFromCommand(command);
+        } else if (Commandable.isCommand(StandSelectCommands.STAND_SELECT.name(), command)) {
             return standSelectCommandService.getMessageFromCommand(command);
-        } else if (Commandable.isCommand(StandInfoCommand.STAND_INFO_PREFIX, command)) {
-            return standInfoCommandService.getMessageFromCommand(command);
-        } else if (Commandable.isCommand(EquipmentSelectCommand.EQUIPMENT_SELECT_PREFIX, command)) {
-            return equipmentSelectCommandService.getMessageFromCommand(command);
-        } else if (Commandable.isCommand(StatusSelectCommand.STATUS_SELECT_PREFIX, command)) {
-            return statusSelectCommandService.getMessageFromCommand(command);
-        } else if (Commandable.isCommand(ChangeStatusCommand.CHANGE_STATUS_PREFIX, command)) {
-            return changeStatusCommandService.getMessageFromCommand(command);
         }
+//        else if (Commandable.isCommand(EquipmentSelectCommand.EQUIPMENT_SELECT_PREFIX, command)) {
+//            return equipmentSelectCommandService.getMessageFromCommand(command);
+//        } else if (Commandable.isCommand(StatusSelectCommand.STATUS_SELECT_PREFIX, command)) {
+//            return statusSelectCommandService.getMessageFromCommand(command);
+//        } else if (Commandable.isCommand(ChangeStatusCommand.CHANGE_STATUS_PREFIX, command)) {
+//            return changeStatusCommandService.getMessageFromCommand(command);
+//        }
 
 
         throw new IllegalArgumentException("Unknown command: " + command);
