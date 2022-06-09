@@ -11,8 +11,12 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public enum StandInfoCommands {
+public enum StandInfoCommands implements Commandable {
     STAND_INFO("Информация о стенде");
 
     private final String dsc;
-}
+
+    @Override
+    public boolean isCommand(String command) {
+        return command.equals(this.name());
+    }}

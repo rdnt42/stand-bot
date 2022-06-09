@@ -15,4 +15,8 @@ public enum StandSelectMenuCommands implements Commandable {
     STAND_SELECT_MENU("Выбор стенда");
 
     private final String dsc;
-}
+
+    @Override
+    public boolean isCommand(String command) {
+        return command.equals(this.name());
+    }}

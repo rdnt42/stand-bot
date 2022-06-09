@@ -17,4 +17,9 @@ public enum ChangeStatusCommands implements Commandable {
     CHANGE_STATUS_TO_UNSTABLE("Сбои в работе");
 
     private final String dsc;
+
+    @Override
+    public boolean isCommand(String command) {
+        return command.equals(this.name());
+    }
 }

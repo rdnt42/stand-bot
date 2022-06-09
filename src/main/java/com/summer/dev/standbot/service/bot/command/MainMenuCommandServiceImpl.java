@@ -25,7 +25,7 @@ public class MainMenuCommandServiceImpl implements CommandService {
 
     @Override
     public SendMessage getMessageFromCommand(String command) {
-        String parseCommand = commandParserService.parseCommand(command);
+        String parseCommand = commandParserService.getFirstCommand(command);
 
         if (MainMenuCommands.MAIN_MENU.name().equals(parseCommand)) {
             return getMainMenuMessage();

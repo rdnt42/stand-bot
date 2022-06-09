@@ -21,23 +21,9 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 @AllArgsConstructor
 @Service("standSelectCommandService")
 public class StandSelectCommandServiceImpl implements CommandService {
-    private final CommandParserService commandParserService;
-    private final KeyBoardService<InlineKeyboardMarkup> keyBoardService;
-    private final StandService standService;
 
     @Override
     public SendMessage getMessageFromCommand(String command) {
-        String standName = commandParserService.parseStandName(command);
-
-        return getStandInfoMessage(standName);
-    }
-
-    private SendMessage getStandInfoMessage(String standName) {
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setParseMode(ParseModeTelegramEnum.PARSE_MODE_MARKDOWN.getName());
-        sendMessage.setText(standService.getStandInfo(standName));
-        sendMessage.setReplyMarkup(keyBoardService.getStandInfoMenuKeyBoard(standName));
-
-        return sendMessage;
+        return null;
     }
 }

@@ -12,9 +12,14 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum StatusSelectCommands implements Commandable {
-    TO_AVAILABLE("Доступен"),
-    TO_UNAVAILABLE("Недоступен"),
-    TO_UNSTABLE("Сбои в работе");
+    STATUS_TO_AVAILABLE("Доступен"),
+    STATUS_TO_UNAVAILABLE("Недоступен"),
+    STATUS_TO_UNSTABLE("Сбои в работе");
 
     private final String dsc;
+
+    @Override
+    public boolean isCommand(String command) {
+        return command.equals(this.name());
+    }
 }

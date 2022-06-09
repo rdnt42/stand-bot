@@ -23,16 +23,18 @@ public class StatusSelectCommandServiceImpl implements CommandService {
 
     @Override
     public SendMessage getMessageFromCommand(String command) {
-        String arguments = commandParserService.getArgumentsWithoutPrefixCommand(command);
+        String selectCommand = commandParserService.getFirstCommand(command);
+        String equipmentCommand = commandParserService.getNextCommand(command, selectCommand);
+        String standCommand = commandParserService.getNextCommand(command, equipmentCommand);
 
-        return getChangeStatusMenuMessage(arguments);
+        return getChangeStatusMenuMessage(equipmentCommand, standCommand);
     }
 
-    private SendMessage getChangeStatusMenuMessage(String arguments) {
+    private SendMessage getChangeStatusMenuMessage(String equipmentCommand, String standCommand) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setParseMode(ParseModeTelegramEnum.PARSE_MODE_MARKDOWN.getName());
         sendMessage.setText("*Выберите новый статус*");
-        sendMessage.setReplyMarkup(keyBoardService.getStatusSelectForEquipmentKeyBoard(arguments));
+        sendMessage.setReplyMarkup(keyBoardService.getStatusSelectForEquipmentKeyBoard(equipmentCommand, standCommand));
 
         return sendMessage;
     }

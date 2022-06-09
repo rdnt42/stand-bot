@@ -2,6 +2,7 @@ package com.summer.dev.standbot.service.bot.keyboard;
 
 import com.summer.dev.standbot.constant.keyboard.*;
 import com.summer.dev.standbot.service.StandService;
+import com.summer.dev.standbot.service.bot.command.encoder.CommandEncoderService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -22,6 +23,7 @@ import java.util.List;
 @Service("inlineKeyboardService")
 public class InlineKeyBoardServiceImpl implements KeyBoardService<InlineKeyboardMarkup> {
     private final StandService standService;
+    private final CommandEncoderService commandEncoderService;
 
     @Override
     public InlineKeyboardMarkup getMainMenuKeyBoard() {
@@ -63,61 +65,58 @@ public class InlineKeyBoardServiceImpl implements KeyBoardService<InlineKeyboard
 
     @Override
     public InlineKeyboardMarkup getStandInfoMenuKeyBoard(String standName) {
-//        List<InlineKeyboardButton> row1 = new ArrayList<>();
-//        row1.add(getStandSelectMenuButton());
-//        row1.add(getEquipmentSelectButton(standName));
-//
-//        List<InlineKeyboardButton> row2 = new ArrayList<>();
-//        row2.add(getMainMenuButton());
-//
-//        List<List<InlineKeyboardButton>> lists = Arrays.asList(row1, row2);
-//
-//        return InlineKeyboardMarkup.builder()
-//                .keyboard(lists)
-//                .build();
-        return null;
+        List<InlineKeyboardButton> row1 = new ArrayList<>();
+        row1.add(getStandSelectMenuButton());
+        row1.add(getEquipmentSelectButton(standName));
+
+        List<InlineKeyboardButton> row2 = new ArrayList<>();
+        row2.add(getMainMenuButton());
+
+        List<List<InlineKeyboardButton>> lists = Arrays.asList(row1, row2);
+
+        return InlineKeyboardMarkup.builder()
+                .keyboard(lists)
+                .build();
     }
 
 
     @Override
-    public InlineKeyboardMarkup getEquipmentSelectForStandMenuKeyBoard(String standName) {
-//        List<InlineKeyboardButton> row1 = new ArrayList<>();
-//        row1.add(getSelectStatusStandStatusButton(standName));
-//        row1.add(getSelectStatusMetricStatusButton(standName));
-//
-//        List<InlineKeyboardButton> row2 = new ArrayList<>();
-//        row2.add(getSelectStatusDependentSessionStatusButton(standName));
-//        row2.add(getSelectStatusIndependentSessionStatusButton(standName));
-//
-//        List<InlineKeyboardButton> row3 = new ArrayList<>();
-//        row3.add(getMainMenuButton());
-//
-//        List<List<InlineKeyboardButton>> lists = Arrays.asList(row1, row2, row3);
-//
-//        return InlineKeyboardMarkup.builder()
-//                .keyboard(lists)
-//                .build();
-        return null;
+    public InlineKeyboardMarkup getEquipmentSelectMenuKeyBoard(String standName) {
+        List<InlineKeyboardButton> row1 = new ArrayList<>();
+        row1.add(getEquipmentStandButton(standName));
+        row1.add(getEquipmentMetricButton(standName));
+
+        List<InlineKeyboardButton> row2 = new ArrayList<>();
+        row2.add(getEquipmentDependentSessionButton(standName));
+        row2.add(getEquipmentIndependentSessionButton(standName));
+
+        List<InlineKeyboardButton> row3 = new ArrayList<>();
+        row3.add(getMainMenuButton());
+
+        List<List<InlineKeyboardButton>> lists = Arrays.asList(row1, row2, row3);
+
+        return InlineKeyboardMarkup.builder()
+                .keyboard(lists)
+                .build();
     }
 
     @Override
-    public InlineKeyboardMarkup getStatusSelectForEquipmentKeyBoard(String arguments) {
-//        List<InlineKeyboardButton> row1 = new ArrayList<>();
-//        row1.add(getChangeStatusToUnavailableButton(arguments));
-//        row1.add(getChangeStatusToUnstableButton(arguments));
-//
-//        List<InlineKeyboardButton> row2 = new ArrayList<>();
-//        row2.add(getChangeStatusToAvailableButton(arguments));
-//
-//        List<InlineKeyboardButton> row3 = new ArrayList<>();
-//        row3.add(getMainMenuButton());
-//
-//        List<List<InlineKeyboardButton>> lists = Arrays.asList(row1, row2, row3);
-//
-//        return InlineKeyboardMarkup.builder()
-//                .keyboard(lists)
-//                .build();
-        return null;
+    public InlineKeyboardMarkup getStatusSelectForEquipmentKeyBoard(String equipmentName, String standName) {
+        List<InlineKeyboardButton> row1 = new ArrayList<>();
+        row1.add(getChangeStatusToUnavailableButton(equipmentName, standName));
+        row1.add(getChangeStatusToUnstableButton(equipmentName, standName));
+
+        List<InlineKeyboardButton> row2 = new ArrayList<>();
+        row2.add(getChangeStatusToAvailableButton(equipmentName, standName));
+
+        List<InlineKeyboardButton> row3 = new ArrayList<>();
+        row3.add(getMainMenuButton());
+
+        List<List<InlineKeyboardButton>> lists = Arrays.asList(row1, row2, row3);
+
+        return InlineKeyboardMarkup.builder()
+                .keyboard(lists)
+                .build();
     }
 
     @Override
@@ -134,98 +133,102 @@ public class InlineKeyBoardServiceImpl implements KeyBoardService<InlineKeyboard
 
     private InlineKeyboardButton getStandSelectMenuButton() {
         String text = StandSelectMenuCommands.STAND_SELECT_MENU.getDsc();
-        String data = getConcatCommand(StandSelectMenuCommands.STAND_SELECT_MENU.name());
+        String data = commandEncoderService.getConcatCommand(StandSelectMenuCommands.STAND_SELECT_MENU.name());
 
-        return InlineKeyboardButton.builder()
-                .text(text)
-                .callbackData(data)
-                .build();
+        return getButtonFromTemplate(text, data);
     }
-//
-//    private InlineKeyboardButton getEquipmentSelectButton(String standName) {
-//        return InlineKeyboardButton.builder()
-//                .text(ChangeStatusCommand.CHANGE_STATUS_NAME)
-//                .callbackData(EquipmentSelectCommand.EQUIPMENT_SELECT_PREFIX + standName)
-//                .build();
-//    }
+
+    private InlineKeyboardButton getEquipmentSelectButton(String standName) {
+        String text = EquipmentSelectMenuCommands.EQUIPMENT_SELECT_MENU.getDsc();
+        String data = commandEncoderService.getConcatCommand(EquipmentSelectMenuCommands.EQUIPMENT_SELECT_MENU.name(), standName);
+
+        return getButtonFromTemplate(text, data);
+    }
 
     private InlineKeyboardButton getMainMenuButton() {
         String text = MainMenuCommands.MAIN_MENU.getDsc();
-        String data = getConcatCommand(MainMenuCommands.MAIN_MENU.name());
+        String data = commandEncoderService.getConcatCommand(MainMenuCommands.MAIN_MENU.name());
 
-        return InlineKeyboardButton.builder()
-                .text(text)
-                .callbackData(data)
-                .build();
+        return getButtonFromTemplate(text, data);
     }
 
     private InlineKeyboardButton getStandInfoButton(String standName) {
+        standName = standName.toUpperCase();
         String text = "Стенд " + standName;
-        String data = getConcatCommand(StandSelectCommands.STAND_SELECT.name(), standName.toUpperCase());
+        String data = commandEncoderService.getConcatCommand(StandInfoCommands.STAND_INFO.name(), standName);
 
+        return getButtonFromTemplate(text, data);
+    }
+
+    private InlineKeyboardButton getEquipmentStandButton(String standName) {
+        String text = EquipmentSelectCommands.STAND.getDsc();
+        String data = commandEncoderService.getConcatCommand(EquipmentSelectCommands.EQ_SELECT.name(),
+                EquipmentSelectCommands.STAND.name(),
+                standName);
+
+        return getButtonFromTemplate(text, data);
+    }
+
+    private InlineKeyboardButton getEquipmentMetricButton(String standName) {
+        String text = EquipmentSelectCommands.METRIC.getDsc();
+        String data = commandEncoderService.getConcatCommand(EquipmentSelectCommands.EQ_SELECT.name(),
+                EquipmentSelectCommands.METRIC.name(),
+                standName);
+
+        return getButtonFromTemplate(text, data);
+    }
+
+    private InlineKeyboardButton getEquipmentIndependentSessionButton(String standName) {
+        String text = EquipmentSelectCommands.INDEPENDENT_SESSION.getDsc();
+        String data = commandEncoderService.getConcatCommand(EquipmentSelectCommands.EQ_SELECT.name(),
+                EquipmentSelectCommands.INDEPENDENT_SESSION.name(),
+                standName);
+
+        return getButtonFromTemplate(text, data);
+    }
+
+    private InlineKeyboardButton getEquipmentDependentSessionButton(String standName) {
+        String text = EquipmentSelectCommands.DEPENDENT_SESSION.getDsc();
+        String data = commandEncoderService.getConcatCommand(EquipmentSelectCommands.EQ_SELECT.name(),
+                EquipmentSelectCommands.DEPENDENT_SESSION.name(),
+                standName);
+
+        return getButtonFromTemplate(text, data);
+    }
+
+    private InlineKeyboardButton getChangeStatusToUnavailableButton(String equipmentName, String standName) {
+        String text = StatusSelectCommands.STATUS_TO_UNAVAILABLE.getDsc();
+        String data = commandEncoderService.getConcatCommand(StatusSelectCommands.STATUS_TO_UNAVAILABLE.name(),
+                equipmentName,
+                standName);
+
+        return getButtonFromTemplate(text, data);
+    }
+
+    private InlineKeyboardButton getChangeStatusToAvailableButton(String equipmentName, String standName) {
+        String text = StatusSelectCommands.STATUS_TO_AVAILABLE.getDsc();
+        String data = commandEncoderService.getConcatCommand(StatusSelectCommands.STATUS_TO_AVAILABLE.name(),
+                equipmentName,
+                standName);
+
+        return getButtonFromTemplate(text, data);
+    }
+
+    private InlineKeyboardButton getChangeStatusToUnstableButton(String equipmentName, String standName) {
+        String text = StatusSelectCommands.STATUS_TO_UNSTABLE.getDsc();
+        String data = commandEncoderService.getConcatCommand(StatusSelectCommands.STATUS_TO_UNSTABLE.name(),
+                equipmentName,
+                standName);
+
+        return getButtonFromTemplate(text, data);
+    }
+
+    private InlineKeyboardButton getButtonFromTemplate(String text, String data) {
         return InlineKeyboardButton.builder()
                 .text(text)
                 .callbackData(data)
                 .build();
     }
 
-//    private InlineKeyboardButton getSelectStatusStandStatusButton(String standName) {
-//        return InlineKeyboardButton.builder()
-//                .text(EquipmentSelectCommand.STAND_NAME)
-//                .callbackData(StatusSelectCommand.STATUS_SELECT_PREFIX + EquipmentSelectCommand.STAND + "_" + standName)
-//                .build();
-//    }
-//
-//    private InlineKeyboardButton getSelectStatusMetricStatusButton(String standName) {
-//        return InlineKeyboardButton.builder()
-//                .text(EquipmentSelectCommand.METRIC_NAME)
-//                .callbackData(StatusSelectCommand.STATUS_SELECT_PREFIX + EquipmentSelectCommand.METRIC + "_" + standName)
-//                .build();
-//    }
-//
-//    private InlineKeyboardButton getSelectStatusDependentSessionStatusButton(String standName) {
-//        return InlineKeyboardButton.builder()
-//                .text(EquipmentSelectCommand.DEPENDENT_SESSION_NAME)
-//                .callbackData(StatusSelectCommand.STATUS_SELECT_PREFIX + EquipmentSelectCommand.DEPENDENT_SESSION + "_" + standName)
-//                .build();
-//    }
-//
-//    private InlineKeyboardButton getSelectStatusIndependentSessionStatusButton(String standName) {
-//        return InlineKeyboardButton.builder()
-//                .text(EquipmentSelectCommand.INDEPENDENT_SESSION_NAME)
-//                .callbackData(StatusSelectCommand.STATUS_SELECT_PREFIX + EquipmentSelectCommand.INDEPENDENT_SESSION + "_" + standName)
-//                .build();
-//    }
-//
-//    private InlineKeyboardButton getChangeStatusToAvailableButton(String standParams) {
-//        return InlineKeyboardButton.builder()
-//                .text(ChangeStatusCommand.TO_AVAILABLE_NAME)
-//                .callbackData(ChangeStatusCommand.CHANGE_STATUS_PREFIX + ChangeStatusCommand.TO_AVAILABLE + "_" + standParams)
-//                .build();
-//    }
-//
-//    private InlineKeyboardButton getChangeStatusToUnavailableButton(String standParams) {
-//        return InlineKeyboardButton.builder()
-//                .text(ChangeStatusCommand.TO_UNAVAILABLE_NAME)
-//                .callbackData(ChangeStatusCommand.CHANGE_STATUS_PREFIX + ChangeStatusCommand.TO_UNAVAILABLE + "_" + standParams)
-//                .build();
-//    }
-//
-//    private InlineKeyboardButton getChangeStatusToUnstableButton(String standParams) {
-//        return InlineKeyboardButton.builder()
-//                .text(ChangeStatusCommand.TO_UNSTABLE_NAME)
-//                .callbackData(ChangeStatusCommand.CHANGE_STATUS_PREFIX + ChangeStatusCommand.TO_UNSTABLE + "_" + standParams)
-//                .build();
-//    }
-//
 
-    private String getConcatCommand(String... args) {
-        StringBuilder sb = new StringBuilder();
-        for (String arg : args) {
-            sb.append(arg);
-            sb.append(CommandTags.TAG_END.getTag());
-        }
-
-        return sb.toString();
-    }
 }

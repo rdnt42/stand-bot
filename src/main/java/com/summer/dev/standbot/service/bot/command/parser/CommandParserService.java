@@ -13,37 +13,41 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class CommandParserService {
-    // TODO groups doesn't work, but count = 4
-    private static final String PREFIX_COMMAND_WITH_TWO_PARAMS = "(\\S*_PREFIX_)(\\S*)_(\\S*)";
-    private static final String PREFIX_COMMAND_WITH_THREE_PARAMS = "(\\w+_PREFIX)_(\\w+)_(\\w+)_(\\w+)";
-    private static final String WITHOUT_PREFIX_COMMAND = "(\\W*_PREFIX_)(\\W*)";
 
-    public String parseStandName(String command) {
-        String regex = CommandTags.TAG_END.getTag();
-        String[] strings = command.split(regex);
+    public String parseStandName(String allCommands) {
+        String[] commands = getCommands(allCommands);
 
-        if (strings.length == 0) {
-            throw new IllegalArgumentException("Cannot parse command: " + command);
-        }
-
-        return strings[strings.length - 1];
+        return commands[commands.length - 1];
     }
 
-    public String parseCommand(String command) {
-        String regex = CommandTags.TAG_END.getTag();
-        String[] strings = command.split(regex);
+    public String getFirstCommand(String allCommands) {
+        String[] commands = getCommands(allCommands);
 
-        if (strings.length == 0) {
-            throw new IllegalArgumentException("Cannot parse command: " + command);
-        }
-
-        return strings[strings.length - 1];
+        return commands[0];
     }
 
-    public String getArgumentsWithoutPrefixCommand(String command) {
-        String[] res = command.split(WITHOUT_PREFIX_COMMAND);
+    public String getNextCommand(String allCommands, String command) {
+        String[] commands = getCommands(allCommands);
 
-        return res[1];
+        for (int i = commands.length - 1; i >= 0; i--) {
+            if (commands[i].equals(command) && i + 1 != commands.length) {
+                return commands[i + 1];
+            }
+        }
+
+        return "";
+
+    }
+
+    private String[] getCommands(String allCommands) {
+        String regex = CommandTags.TAG_END.getTag();
+        String[] strings = allCommands.split(regex);
+
+        if (strings.length == 0) {
+            throw new IllegalArgumentException("Cannot parse command: " + allCommands);
+        }
+
+        return strings;
     }
 
     public String parseActionNameByPattern(String command) {

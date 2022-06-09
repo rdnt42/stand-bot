@@ -15,4 +15,9 @@ public enum MainMenuCommands implements Commandable {
     MAIN_MENU("Основное меню");
 
     private final String dsc;
+
+    @Override
+    public boolean isCommand(String command) {
+        return command.equals(this.name());
+    }
 }

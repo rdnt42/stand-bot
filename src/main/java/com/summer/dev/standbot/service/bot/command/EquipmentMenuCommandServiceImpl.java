@@ -11,12 +11,12 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 /**
  * Created with IntelliJ IDEA.
  * User: marowak
- * Date: 29.05.2022
- * Time: 18:20
+ * Date: 09.06.2022
+ * Time: 23:28
  */
 @AllArgsConstructor
-@Service("equipmentSelectCommandService")
-public class EquipmentSelectCommandServiceImpl implements CommandService {
+@Service("equipmentMenuCommandService")
+public class EquipmentMenuCommandServiceImpl implements CommandService {
     private final CommandParserService commandParserService;
     private final KeyBoardService<InlineKeyboardMarkup> keyBoardService;
 
@@ -35,4 +35,5 @@ public class EquipmentSelectCommandServiceImpl implements CommandService {
 
         return sendMessage;
     }
+
 }

@@ -7,5 +7,10 @@ package com.summer.dev.standbot.constant.keyboard;
  * Time: 23:08
  */
 public enum StandSelectCommands implements Commandable {
-    STAND_SELECT
+    STAND_SELECT;
+
+    @Override
+    public boolean isCommand(String command) {
+        return command.equals(this.name());
+    }
 }

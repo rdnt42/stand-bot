@@ -15,4 +15,9 @@ public enum StatusSelectMenuCommands implements Commandable {
     STATUS_SELECT_MENU("Изменить статус");
 
     private final String dsc;
+
+    @Override
+    public boolean isCommand(String command) {
+        return command.equals(this.name());
+    }
 }

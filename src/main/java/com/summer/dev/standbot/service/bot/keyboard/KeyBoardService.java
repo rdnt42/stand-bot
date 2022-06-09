@@ -15,9 +15,9 @@ public interface KeyBoardService<T extends ReplyKeyboard> {
 
     T getStandInfoMenuKeyBoard(String standName);
 
-    T getEquipmentSelectForStandMenuKeyBoard(String standName);
+    T getEquipmentSelectMenuKeyBoard(String standName);
 
-    T getStatusSelectForEquipmentKeyBoard(String arguments);
+    T getStatusSelectForEquipmentKeyBoard(String equipmentName, String standName);
 
     T getChangeStatusKeyBoard();
 

@@ -1,7 +1,6 @@
 package com.summer.dev.standbot.service.bot.command;
 
 import com.summer.dev.standbot.constant.ParseModeTelegramEnum;
-import com.summer.dev.standbot.constant.keyboard.StandSelectCommands;
 import com.summer.dev.standbot.constant.keyboard.StandSelectMenuCommands;
 import com.summer.dev.standbot.service.bot.command.parser.CommandParserService;
 import com.summer.dev.standbot.service.bot.keyboard.KeyBoardService;
@@ -25,7 +24,7 @@ public class StandSelectMenuCommandServiceImpl implements CommandService {
 
     @Override
     public SendMessage getMessageFromCommand(String command) {
-        String parseCommand = commandParserService.parseCommand(command);
+        String parseCommand = commandParserService.getFirstCommand(command);
 
         if (StandSelectMenuCommands.STAND_SELECT_MENU.name().equals(parseCommand)) {
             return getSelectStandsMenu();
