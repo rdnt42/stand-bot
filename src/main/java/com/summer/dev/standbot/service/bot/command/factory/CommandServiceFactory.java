@@ -1,7 +1,7 @@
-package com.summer.dev.standbot.service.bot.command;
+package com.summer.dev.standbot.service.bot.command.factory;
 
 import com.summer.dev.standbot.constant.keyboard.*;
-import com.summer.dev.standbot.service.bot.command.parser.CommandParserService;
+import com.summer.dev.standbot.service.bot.command.CommandService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;

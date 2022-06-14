@@ -2,7 +2,7 @@ package com.summer.dev.standbot.service.bot.handlers;
 
 import com.summer.dev.standbot.constant.keyboard.*;
 import com.summer.dev.standbot.service.bot.command.CommandService;
-import com.summer.dev.standbot.service.bot.command.CommandServiceFactory;
+import com.summer.dev.standbot.service.bot.command.factory.CommandServiceFactory;
 import com.summer.dev.standbot.service.bot.command.parser.CommandParserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
