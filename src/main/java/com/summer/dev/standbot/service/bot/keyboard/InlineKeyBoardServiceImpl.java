@@ -162,7 +162,7 @@ public class InlineKeyBoardServiceImpl implements KeyBoardService<InlineKeyboard
 
     private InlineKeyboardButton getEquipmentStandButton(String standName) {
         String text = EquipmentSelectCommands.STAND.getDsc();
-        String data = commandEncoderService.getConcatCommand(EquipmentSelectCommands.EQ_SELECT.name(),
+        String data = commandEncoderService.getConcatCommand(StatusSelectMenuCommands.STATUS_SELECT_MENU.name(),
                 EquipmentSelectCommands.STAND.name(),
                 standName);
 
@@ -171,7 +171,7 @@ public class InlineKeyBoardServiceImpl implements KeyBoardService<InlineKeyboard
 
     private InlineKeyboardButton getEquipmentMetricButton(String standName) {
         String text = EquipmentSelectCommands.METRIC.getDsc();
-        String data = commandEncoderService.getConcatCommand(EquipmentSelectCommands.EQ_SELECT.name(),
+        String data = commandEncoderService.getConcatCommand(StatusSelectMenuCommands.STATUS_SELECT_MENU.name(),
                 EquipmentSelectCommands.METRIC.name(),
                 standName);
 
@@ -180,7 +180,7 @@ public class InlineKeyBoardServiceImpl implements KeyBoardService<InlineKeyboard
 
     private InlineKeyboardButton getEquipmentIndependentSessionButton(String standName) {
         String text = EquipmentSelectCommands.INDEPENDENT_SESSION.getDsc();
-        String data = commandEncoderService.getConcatCommand(EquipmentSelectCommands.EQ_SELECT.name(),
+        String data = commandEncoderService.getConcatCommand(StatusSelectMenuCommands.STATUS_SELECT_MENU.name(),
                 EquipmentSelectCommands.INDEPENDENT_SESSION.name(),
                 standName);
 
@@ -189,7 +189,7 @@ public class InlineKeyBoardServiceImpl implements KeyBoardService<InlineKeyboard
 
     private InlineKeyboardButton getEquipmentDependentSessionButton(String standName) {
         String text = EquipmentSelectCommands.DEPENDENT_SESSION.getDsc();
-        String data = commandEncoderService.getConcatCommand(EquipmentSelectCommands.EQ_SELECT.name(),
+        String data = commandEncoderService.getConcatCommand(StatusSelectMenuCommands.STATUS_SELECT_MENU.name(),
                 EquipmentSelectCommands.DEPENDENT_SESSION.name(),
                 standName);
 
@@ -198,7 +198,8 @@ public class InlineKeyBoardServiceImpl implements KeyBoardService<InlineKeyboard
 
     private InlineKeyboardButton getChangeStatusToUnavailableButton(String equipmentName, String standName) {
         String text = StatusSelectCommands.STATUS_TO_UNAVAILABLE.getDsc();
-        String data = commandEncoderService.getConcatCommand(StatusSelectCommands.STATUS_TO_UNAVAILABLE.name(),
+        String data = commandEncoderService.getConcatCommand(ChangeStatusCommands.CHANGE_STATUS.name(),
+                StatusSelectCommands.STATUS_TO_UNAVAILABLE.name(),
                 equipmentName,
                 standName);
 
@@ -207,7 +208,8 @@ public class InlineKeyBoardServiceImpl implements KeyBoardService<InlineKeyboard
 
     private InlineKeyboardButton getChangeStatusToAvailableButton(String equipmentName, String standName) {
         String text = StatusSelectCommands.STATUS_TO_AVAILABLE.getDsc();
-        String data = commandEncoderService.getConcatCommand(StatusSelectCommands.STATUS_TO_AVAILABLE.name(),
+        String data = commandEncoderService.getConcatCommand(ChangeStatusCommands.CHANGE_STATUS.name(),
+                StatusSelectCommands.STATUS_TO_AVAILABLE.name(),
                 equipmentName,
                 standName);
 
@@ -216,7 +218,8 @@ public class InlineKeyBoardServiceImpl implements KeyBoardService<InlineKeyboard
 
     private InlineKeyboardButton getChangeStatusToUnstableButton(String equipmentName, String standName) {
         String text = StatusSelectCommands.STATUS_TO_UNSTABLE.getDsc();
-        String data = commandEncoderService.getConcatCommand(StatusSelectCommands.STATUS_TO_UNSTABLE.name(),
+        String data = commandEncoderService.getConcatCommand(ChangeStatusCommands.CHANGE_STATUS.name(),
+                StatusSelectCommands.STATUS_TO_UNSTABLE.name(),
                 equipmentName,
                 standName);
 

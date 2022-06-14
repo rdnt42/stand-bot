@@ -50,21 +50,5 @@ public class CommandParserService {
         return strings;
     }
 
-    public String parseActionNameByPattern(String command) {
-        String[] str = command.split("_");
 
-        return str[3] + "_" + str[4];
-    }
-
-    public String parseEquipmentNameByPattern(String command) {
-        String[] str = command.split("_");
-
-        return str[5] + "_" + str[6];
-    }
-
-    public String parseStandNameByPattern(String command) {
-        String[] str = command.split("_");
-
-        return str[7];
-    }
 }

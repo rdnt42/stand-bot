@@ -21,5 +21,5 @@ public interface StandService {
 
     List<String> getStandsNames();
 
-    void changeStatus(String standName, String equipmentName, String action);
+    void changeStatus(String standName, String equipmentName, String newStatus);
 }

@@ -30,12 +30,11 @@ public class CommandServiceFactory {
     @Qualifier("equipmentMenuCommandService")
     private final CommandService equipmentMenuCommandService;
 
-    @Qualifier("equipmentSelectCommandService")
-    private final CommandService equipmentSelectCommandService;
-
     @Qualifier("statusSelectCommandService")
     private final CommandService statusSelectCommandService;
 
+    @Qualifier("changeStatusCommandService")
+    private final CommandService changeStatusCommandService;
 
     public CommandService getCommandService(String command) {
         log.debug("Command: " + command);
@@ -48,19 +47,12 @@ public class CommandServiceFactory {
             return standInfoCommandService;
         } else if (EquipmentSelectMenuCommands.EQUIPMENT_SELECT_MENU.isCommand(command)) {
             return equipmentMenuCommandService;
-        } else if (EquipmentSelectCommands.EQ_SELECT.isCommand(command)) {
+        } else if (StatusSelectMenuCommands.STATUS_SELECT_MENU.isCommand(command)) {
             return statusSelectCommandService;
+        } else if (ChangeStatusCommands.CHANGE_STATUS.isCommand(command)) {
+            return changeStatusCommandService;
         }
-//        else if (Commandable.isCommand(EquipmentSelectCommand.EQUIPMENT_SELECT_PREFIX, command)) {
-//            return equipmentSelectCommandService.getMessageFromCommand(command);
-//        } else if (Commandable.isCommand(StatusSelectCommand.STATUS_SELECT_PREFIX, command)) {
-//            return statusSelectCommandService.getMessageFromCommand(command);
-//        } else if (Commandable.isCommand(ChangeStatusCommand.CHANGE_STATUS_PREFIX, command)) {
-//            return changeStatusCommandService.getMessageFromCommand(command);
-//        }
-
 
         throw new IllegalArgumentException("Unknown command: " + command);
-
     }
 }

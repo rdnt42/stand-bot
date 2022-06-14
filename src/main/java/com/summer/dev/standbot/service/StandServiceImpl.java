@@ -1,7 +1,8 @@
 package com.summer.dev.standbot.service;
 
-import com.summer.dev.standbot.constant.EquipmentStatusEnum;
+import com.summer.dev.standbot.constant.EquipmentStatuses;
 import com.summer.dev.standbot.constant.TelegramEmoji;
+import com.summer.dev.standbot.constant.keyboard.StatusSelectCommands;
 import com.summer.dev.standbot.entity.Stand;
 import com.summer.dev.standbot.entity.Status;
 import com.summer.dev.standbot.repository.StandRepository;
@@ -75,7 +76,7 @@ public class StandServiceImpl implements StandService {
     }
 
     @Override
-    public void changeStatus(String standName, String equipmentName, String action) {
+    public void changeStatus(String standName, String equipmentName, String newStatusName) {
         Stand stand = getByName(standName);
         EquipmentStatusEnum newStatus = getStatusFromAction(action);
 

@@ -30,10 +30,12 @@ public class ChangeStatusCommandServiceImpl implements CommandService {
     }
 
     private void updateStandStatus(String command) {
-        String standName = commandParserService.parseStandNameByPattern(command);
-        String equipmentName = commandParserService.parseEquipmentNameByPattern(command);
-        String action = commandParserService.parseActionNameByPattern(command);
-        standService.changeStatus(standName, equipmentName, action);
+        String selectCommand = commandParserService.getFirstCommand(command);
+        String statusCommand = commandParserService.getNextCommand(command, selectCommand);
+        String equipmentCommand = commandParserService.getNextCommand(command, statusCommand);
+        String standCommand = commandParserService.getNextCommand(command, equipmentCommand);
+
+        standService.changeStatus(standCommand, equipmentCommand, statusCommand);
     }
 
     private SendMessage getChangeStatusMenuMessage() {

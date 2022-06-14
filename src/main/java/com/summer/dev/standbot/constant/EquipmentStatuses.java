@@ -10,17 +10,17 @@ import lombok.Getter;
  * Time: 11:46
  */
 @Getter
-public enum EquipmentStatusEnum {
+public enum EquipmentStatuses {
     EQUIPMENT_STATE_AVAILABLE(1, "Доступен"),
     EQUIPMENT_STATE_UNAVAILABLE(2, "Недоступен"),
     EQUIPMENT_STATE_UNSTABLE(3, "Сбои в работе");
 
     private final int id;
-    private final String name;
+    private final String dsc;
 
-    EquipmentStatusEnum(int id, String name) {
+    EquipmentStatuses(int id, String dsc) {
         this.id = id;
-        this.name = name;
+        this.dsc = dsc;
     }
 
     public boolean equalsStatus(Status status) {
