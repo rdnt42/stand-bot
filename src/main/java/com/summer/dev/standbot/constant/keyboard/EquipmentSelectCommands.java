@@ -12,7 +12,6 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum EquipmentSelectCommands implements Commandable {
-    EQ_SELECT(""),
     STAND("Стенд"),
     METRIC("Метрики"),
     INDEPENDENT_SESSION("Независимая сессия"),
