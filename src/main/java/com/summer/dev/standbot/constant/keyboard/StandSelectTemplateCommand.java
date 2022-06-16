@@ -1,6 +1,5 @@
 package com.summer.dev.standbot.constant.keyboard;
 
-import com.summer.dev.standbot.constant.menu.MainMenu;
 import lombok.Getter;
 import lombok.Setter;
 
