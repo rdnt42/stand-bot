@@ -232,6 +232,4 @@ public class InlineKeyBoardServiceImpl implements KeyBoardService<InlineKeyboard
                 .callbackData(data)
                 .build();
     }
-
-
 }
