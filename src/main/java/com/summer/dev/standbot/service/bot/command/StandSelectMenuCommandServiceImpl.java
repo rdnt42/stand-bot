@@ -1,7 +1,7 @@
 package com.summer.dev.standbot.service.bot.command;
 
 import com.summer.dev.standbot.constant.ParseModeTelegramEnum;
-import com.summer.dev.standbot.service.StandService;
+import com.summer.dev.standbot.constant.keyboard.StandSelectMenuCommands;
 import com.summer.dev.standbot.service.bot.command.parser.CommandParserService;
 import com.summer.dev.standbot.service.bot.keyboard.KeyBoardService;
 import lombok.AllArgsConstructor;
@@ -12,28 +12,32 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 /**
  * Created with IntelliJ IDEA.
  * User: marowak
- * Date: 29.05.2022
- * Time: 17:51
+ * Date: 01.06.2022
+ * Time: 23:47
  */
 @AllArgsConstructor
-@Service("standInfoCommandService")
-public class StandInfoCommandServiceImpl implements CommandService {
-    private final CommandParserService commandParserService;
+@Service("standSelectMenuCommandService")
+public class StandSelectMenuCommandServiceImpl implements CommandService {
+
     private final KeyBoardService<InlineKeyboardMarkup> keyBoardService;
-    private final StandService standService;
+    private final CommandParserService commandParserService;
 
     @Override
     public SendMessage getMessageFromCommand(String command) {
-        String standName = commandParserService.parseStandName(command);
+        String parseCommand = commandParserService.getFirstCommand(command);
 
-        return getStandInfoMessage(standName);
+        if (StandSelectMenuCommands.STAND_SELECT_MENU.name().equals(parseCommand)) {
+            return getSelectStandsMenu();
+        }
+
+        throw new IllegalStateException("Unexpected value: " + command);
     }
 
-    private SendMessage getStandInfoMessage(String standName) {
+    private SendMessage getSelectStandsMenu() {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setParseMode(ParseModeTelegramEnum.PARSE_MODE_MARKDOWN.getName());
-        sendMessage.setText(standService.getStandInfo(standName));
-        sendMessage.setReplyMarkup(keyBoardService.getStandInfoMenuKeyBoard(standName));
+        sendMessage.setText("*Выберите стенд*");
+        sendMessage.setReplyMarkup(keyBoardService.getStandSelectMenuKeyBoard());
 
         return sendMessage;
     }

@@ -1,7 +1,6 @@
 package com.summer.dev.standbot.service;
 
 import com.summer.dev.standbot.entity.Stand;
-import com.summer.dev.standbot.entity.EquipmentState;
 
 import java.util.List;
 
@@ -14,8 +13,6 @@ import java.util.List;
 public interface StandService {
     Stand get(Long id);
 
-    void setStatus(Long id, EquipmentState status);
-
     List<Stand> getAll();
 
     String getStandsInfo();
@@ -23,4 +20,6 @@ public interface StandService {
     String getStandInfo(String name);
 
     List<String> getStandsNames();
+
+    void changeStatus(String standName, String equipmentName, String newStatus);
 }

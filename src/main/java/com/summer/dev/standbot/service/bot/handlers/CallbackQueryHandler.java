@@ -2,6 +2,8 @@ package com.summer.dev.standbot.service.bot.handlers;
 
 import com.summer.dev.standbot.constant.keyboard.*;
 import com.summer.dev.standbot.service.bot.command.CommandService;
+import com.summer.dev.standbot.service.bot.command.factory.CommandServiceFactory;
+import com.summer.dev.standbot.service.bot.command.parser.CommandParserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,10 +21,9 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 @Service
 public class CallbackQueryHandler {
 
-    private final CommandService<MainMenuKeyboardCommand> mainMenuCommandService;
-    private final CommandService<StandSelectTemplateCommand> standSelectCommandService;
-    private final CommandService<StandInfoCommand> standInfoCommandCommandService;
-    private final CommandService<EquipmentStateCommand> equipmentStateCommandCommandService;
+    private final CommandServiceFactory commandServiceFactory;
+    private final CommandParserService commandParserService;
+
 
     public SendMessage processCallbackQuery(CallbackQuery buttonQuery) {
         final String chatId = buttonQuery.getMessage().getChatId().toString();
@@ -31,6 +32,8 @@ public class CallbackQueryHandler {
 
         SendMessage sendMessage = trySendMessageByCommand(data);
         sendMessage.setChatId(chatId);
+        log.debug("Send answer to chatId: {}, name: {}",
+                chatId, buttonQuery.getFrom().getFirstName());
 
         return sendMessage;
     }
@@ -40,40 +43,20 @@ public class CallbackQueryHandler {
             return getMessageByCommand(data);
         } catch (Exception e) {
             e.printStackTrace();
-            return mainMenuCommandService.getMessageFromCommand(MainMenuKeyboardCommand.MAIN_MENU);
+
+            String mainMenu = MainMenuCommands.MAIN_MENU.name();
+            CommandService commandService = commandServiceFactory.getCommandService(mainMenu);
+
+            return commandService.getMessageFromCommand(mainMenu);
         }
     }
 
-    private SendMessage getMessageByCommand(String data) {
-        Commandable command;
-        if ((command = MainMenuKeyboardCommand.getByName(data)) != null) {
-            return getMessageFromMainMenu(command);
-        } else if (StandSelectTemplateCommand.isContainsStandName(data)) {
-            return getMessageFromStandSelect(data);
-        } else if ((command = StandInfoCommand.getByName(data)) != null) {
-            return getMessageFromStandInfo(command);
-        } else if ((command = EquipmentStateCommand.getByName(data)) != null) {
-            return getMessageFromEquipmentState(command);
-        } else {
-            throw new IllegalArgumentException("Unknown command: " + data);
-        }
-    }
+    private SendMessage getMessageByCommand(String command) {
+        log.debug("Full command: " + command);
 
-    private SendMessage getMessageFromMainMenu(Commandable command) {
-        return mainMenuCommandService.getMessageFromCommand((MainMenuKeyboardCommand) command);
-    }
+        String firstCommand = commandParserService.getFirstCommand(command);
+        CommandService commandService = commandServiceFactory.getCommandService(firstCommand);
 
-    private SendMessage getMessageFromStandSelect(String data) {
-        StandSelectTemplateCommand template = new StandSelectTemplateCommand(data);
-
-        return standSelectCommandService.getMessageFromCommand(template);
-    }
-
-    private SendMessage getMessageFromStandInfo(Commandable command) {
-        return standInfoCommandCommandService.getMessageFromCommand((StandInfoCommand) command);
-    }
-
-    private SendMessage getMessageFromEquipmentState(Commandable command) {
-        return equipmentStateCommandCommandService.getMessageFromCommand((EquipmentStateCommand) command);
+        return commandService.getMessageFromCommand(command);
     }
 }

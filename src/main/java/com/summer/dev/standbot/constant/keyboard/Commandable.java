@@ -7,5 +7,5 @@ package com.summer.dev.standbot.constant.keyboard;
  * Time: 14:01
  */
 public interface Commandable {
-
+    boolean isCommand(String command);
 }
